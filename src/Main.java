@@ -1,3 +1,4 @@
+import BusinessLogic.EmployeesManagement;
 import DataAccess.SerializationOperations;
 import DataModel.ComplexTask;
 import DataModel.Employee;
@@ -13,6 +14,9 @@ public class Main {
         serializationOperations.writeFile(t1);
         serializationOperations.writeFile(t2);
         serializationOperations.readAllObjectsFromFile("src/DataAccess/taskFile.txt");
+        EmployeesManagement employeesManagement = new EmployeesManagement();
+        employeesManagement.addEmployee(e1);
+
 
     }
 }

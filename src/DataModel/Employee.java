@@ -27,4 +27,9 @@ public class Employee implements Serializable {
     public String toString(){
         return this.idEmployee+" "+this.name+" "+this.age;
     }
+
+    @Override
+    public int hashCode() {
+        return idEmployee;
+    }
 }

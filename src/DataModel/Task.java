@@ -44,6 +44,10 @@ public abstract class Task implements Serializable {
         return title;
     }
 
+    public void setStatusTask(String statusTask) {
+        this.statusTask = statusTask;
+    }
+
     public abstract int estimateDuration();
 
     public String toString(){

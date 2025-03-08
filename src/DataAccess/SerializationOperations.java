@@ -50,7 +50,6 @@ public class SerializationOperations {
             Object objectRead = objectInputStream.readObject();
             objectInputStream.close();
 
-
             if( objectRead instanceof ComplexTask){
                 Task task = (ComplexTask) objectRead;
                 System.out.println(task.toString());
