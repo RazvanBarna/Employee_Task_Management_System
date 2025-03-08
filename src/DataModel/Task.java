@@ -18,6 +18,8 @@ public abstract class Task implements Serializable {
         this.endHour = endHour;
     }
 
+    public Task(){};
+
     public String getStatusTask() {
         return statusTask;
     }
@@ -32,6 +34,14 @@ public abstract class Task implements Serializable {
 
     public int getEndHour() {
         return endHour;
+    }
+
+    public static int getIdStatic() {
+        return idStatic;
+    }
+
+    public String getTitle() {
+        return title;
     }
 
     public abstract int estimateDuration();

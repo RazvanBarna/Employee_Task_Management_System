@@ -2,7 +2,7 @@ package DataModel;
 
 public class SimpleTask extends Task{
 
-    public SimpleTask(String statusTask, String title, int startHour, int endHour, String description) {
+    public SimpleTask(String statusTask, String title, int startHour, int endHour) {
         super(statusTask, title, startHour, endHour);
     }
 

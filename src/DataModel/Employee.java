@@ -14,6 +14,8 @@ public class Employee implements Serializable {
         this.age = age;
     }
 
+    public Employee(){};
+
     public int getIdEmployee() {
         return idEmployee;
     }

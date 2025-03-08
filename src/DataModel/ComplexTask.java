@@ -8,6 +8,16 @@ public class ComplexTask extends Task{
         this.description = description;
     }
 
+    public ComplexTask(){};
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @Override
     public int estimateDuration() {
         return this.getEndHour()-this.getStartHour();
