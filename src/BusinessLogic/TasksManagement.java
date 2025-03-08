@@ -34,7 +34,7 @@ public class TasksManagement {
     }
 
      */
-    public List<Task> findListOfTasksFromMap(int idEmployee){
+    private List<Task> findListOfTasksFromMap(int idEmployee){
         for(Map.Entry<Employee,List<Task>> entry: mapOfTasks.entrySet()){
             if(entry.getKey().getIdEmployee() ==idEmployee){
                 return entry.getValue();
@@ -43,7 +43,7 @@ public class TasksManagement {
         return null;
     }
 
-    public boolean hasAlreadyTheTask(List<Task> tasksOfEmployer,Task task){
+    private boolean hasAlreadyTheTask(List<Task> tasksOfEmployer,Task task){
         for(Task taskIndex : tasksOfEmployer){
             if(taskIndex.equals(task)){
                 return false;
@@ -59,7 +59,7 @@ public class TasksManagement {
         }
     }
 
-    public Task findTaskInListModify(List <Task> tasks,int idTask){
+    private Task findTaskInListModify(List <Task> tasks,int idTask){
         if (tasks !=null) {
             for (Task taskIndex : tasks) {
                 if (taskIndex.getIdTask() == idTask) {
