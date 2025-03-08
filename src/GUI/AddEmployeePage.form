@@ -17,7 +17,7 @@
         </constraints>
         <properties>
           <font name="Times New Roman" size="20" style="1"/>
-          <text value="Add Data about your new employee :"/>
+          <text value="Add informations about your new employee :"/>
         </properties>
       </component>
       <vspacer id="61f41">

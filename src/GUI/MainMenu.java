@@ -39,7 +39,8 @@ public class MainMenu extends JFrame {
         addTaskButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                new AddTaskPage(employeesManagement,tasksManagement);
+                dispose();
             }
         });
 
