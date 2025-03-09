@@ -36,13 +36,38 @@ public class EmployeesManagement {
         return null;
     }
 
-    public int calculateEmployeeWorkDuration(int idEmployee){
-        List<Task> tasksOfEmployer = findListOfTasksFromMap(idEmployee);
-        if(tasksOfEmployer == null) return 0;
+    private Employee searchEmployeeToSetWorkDuration(int idEmployee){
+        for(Map.Entry<Employee,List<Task>> entry: tasksManagement.getMapOfTasks().entrySet()){
+            if(entry.getKey().getIdEmployee() ==idEmployee){
+                return entry.getKey();
+            }
+        }
+        return null;
+    }
+
+    private void setWordDuration(Employee employee , int nrHours){
+        if (employee !=null){
+            employee.setNrHoursWorks(nrHours);
+        }
+        else {
+            errorMessageEmployee=" this employee does not exist";
+        }
+    }
+
+    private int calculateNrOfHours(List<Task> tasks){
+        if(tasks == null) return 0;
         int totalOfHours=0;
-        for(Task task : tasksOfEmployer){
+        for(Task task : tasks){
             totalOfHours+=task.estimateDuration();
         }
+        return totalOfHours;
+    }
+
+    public int calculateEmployeeWorkDuration(int idEmployee){
+        List<Task> tasksOfEmployer = findListOfTasksFromMap(idEmployee);
+        int totalOfHours = calculateNrOfHours(tasksOfEmployer);
+        Employee employeeToSetWorkDuration = searchEmployeeToSetWorkDuration(idEmployee);
+        setWordDuration(employeeToSetWorkDuration,totalOfHours);
         return totalOfHours;
     }
 

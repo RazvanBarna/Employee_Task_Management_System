@@ -2,6 +2,7 @@ package GUI;
 
 import BusinessLogic.EmployeesManagement;
 import BusinessLogic.TasksManagement;
+import BusinessLogic.Utility;
 import DataModel.ComplexTask;
 import DataModel.SimpleTask;
 
@@ -10,8 +11,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class AddTaskPage extends JFrame {
-    private EmployeesManagement employeesManagement;
     private TasksManagement tasksManagement;
+    private EmployeesManagement employeesManagement;
+    private Utility utility;
     private JPanel addTaskPanel;
     private JLabel fieldTitle;
     private JTextField textField1;
@@ -27,9 +29,11 @@ public class AddTaskPage extends JFrame {
     private JLabel errorMessage;
     private int whichTaskIsWanted=0;
 
-    public AddTaskPage(EmployeesManagement employeesManagement, TasksManagement tasksManagement){
+    public AddTaskPage(EmployeesManagement employeesManagement, TasksManagement tasksManagement,Utility utility){
         this.employeesManagement = employeesManagement;
         this.tasksManagement = tasksManagement;
+        this.utility = utility;
+
         setContentPane(addTaskPanel);
         setSize(700,700);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -41,7 +45,7 @@ public class AddTaskPage extends JFrame {
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new MainMenu(employeesManagement,tasksManagement);
+                new MainMenu(employeesManagement,tasksManagement,utility);
                 dispose();
             }
         });
@@ -62,6 +66,10 @@ public class AddTaskPage extends JFrame {
                     }
                     else if ( (fieldInformation1.isEmpty() || fieldInformation2.isEmpty() || fieldInformation3.isEmpty() || fieldInformation4.isEmpty() ) && whichTaskIsWanted==1) {
                         throw new RuntimeException("All filed must be completed!");
+                    }
+                    if(! (fieldInformation2.equals("Uncompleted") || fieldInformation2.equals("Completed")))
+                    {
+                        throw new RuntimeException("Task's status must be \"Completed\" or \"Uncompleted\" ");
                     }
                     int startHour = Integer.parseInt(fieldInformation3);
                     int endHour = Integer.parseInt(fieldInformation4);

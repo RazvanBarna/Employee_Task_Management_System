@@ -2,6 +2,7 @@ package GUI;
 
 import BusinessLogic.EmployeesManagement;
 import BusinessLogic.TasksManagement;
+import BusinessLogic.Utility;
 import DataModel.Employee;
 
 import javax.swing.*;
@@ -19,10 +20,13 @@ public class AddEmployeePage extends JFrame {
     private JLabel fieldMessageError;
     private EmployeesManagement employeesManagement;
     private TasksManagement tasksManagement;
+    private Utility utility;
 
-    public AddEmployeePage(EmployeesManagement employeesManagement, TasksManagement tasksManagement){
+    public AddEmployeePage(EmployeesManagement employeesManagement, TasksManagement tasksManagement,Utility utility){
         this.employeesManagement = employeesManagement;
         this.tasksManagement = tasksManagement;
+        this.utility = utility;
+
         setContentPane(AddEmployeePanel);
         setSize(500,500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -33,7 +37,7 @@ public class AddEmployeePage extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                new MainMenu(employeesManagement,tasksManagement);
+                new MainMenu(employeesManagement,tasksManagement,utility);
             }
         });
 

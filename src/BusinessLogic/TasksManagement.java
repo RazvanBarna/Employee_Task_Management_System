@@ -54,9 +54,14 @@ public class TasksManagement {
 
     public void assignTaskToEmployee(int idEmployee,Task currentTask){
         List<Task> tasksOfEmployer = findListOfTasksFromMap(idEmployee);
-        if(currentTask !=null && tasksOfEmployer !=null && hasAlreadyTheTask(tasksOfEmployer,currentTask)){
+        if(tasksOfEmployer == null){
             tasksOfEmployer.add(currentTask);
         }
+        else if(!hasAlreadyTheTask(tasksOfEmployer,currentTask)) throw  new RuntimeException("The task is already assign to this employee");
+        else {
+            tasksOfEmployer.add(currentTask);
+        }
+
     }
 
     private Task findTaskInListModify(List <Task> tasks,int idTask){

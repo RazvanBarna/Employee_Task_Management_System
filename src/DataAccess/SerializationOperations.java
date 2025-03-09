@@ -43,6 +43,7 @@ public class SerializationOperations {
         }
     }
 
+    //TO do : will be 2 methods for read : one for employee and return list and one with tasks
     public void readAllObjectsFromFile(String file) {
         try {
             FileInputStream fileInputStream = new FileInputStream(file);

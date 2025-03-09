@@ -2,6 +2,7 @@ package GUI;
 
 import BusinessLogic.EmployeesManagement;
 import BusinessLogic.TasksManagement;
+import BusinessLogic.Utility;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -18,10 +19,13 @@ public class MainMenu extends JFrame {
     private JPanel Panel;
     private TasksManagement tasksManagement;
     private EmployeesManagement employeesManagement;
+    private Utility utility;
 
-    public MainMenu(EmployeesManagement employeesManagement,TasksManagement tasksManagement){
-        this.tasksManagement=tasksManagement;
-        this.employeesManagement = new EmployeesManagement(tasksManagement);
+    public MainMenu(EmployeesManagement employeesManagement,TasksManagement tasksManagement,Utility utility){
+        this.tasksManagement= tasksManagement;
+        this.employeesManagement = employeesManagement;
+        this.utility = utility;
+
         setContentPane(Panel);
         setSize(500,500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -31,7 +35,7 @@ public class MainMenu extends JFrame {
         addEmployeeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new AddEmployeePage(employeesManagement,tasksManagement);
+                new AddEmployeePage(employeesManagement,tasksManagement,utility);
                 dispose();
             }
         });
@@ -39,7 +43,7 @@ public class MainMenu extends JFrame {
         addTaskButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new AddTaskPage(employeesManagement,tasksManagement);
+                new AddTaskPage(employeesManagement,tasksManagement,utility);
                 dispose();
             }
         });
@@ -47,7 +51,8 @@ public class MainMenu extends JFrame {
         assignTasksButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                new AssignTaskToEmployeePage(tasksManagement,employeesManagement,utility);
+                dispose();
             }
         });
 
