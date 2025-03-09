@@ -43,16 +43,16 @@ public class Main {
 
         */
 
-        TasksManagement tasksManagement = new TasksManagement();
-        EmployeesManagement employeesManagement = new EmployeesManagement(tasksManagement);
-        Utility utility = new Utility(tasksManagement,employeesManagement);
-        new MainMenu(employeesManagement,tasksManagement,utility);
+        //TasksManagement tasksManagement = new TasksManagement();
+        //EmployeesManagement employeesManagement = new EmployeesManagement(tasksManagement);
+        //Utility utility = new Utility(tasksManagement,employeesManagement);
+        //new MainMenu(employeesManagement,tasksManagement,utility);
 
 
         //SerializationOperations serializationOperations =  new SerializationOperations();
         //serializationOperations.readAllObjectsFromFile("src/DataAccess/taskFile.txt");
 
-        /*Employee e1 = new Employee("John",30);
+        Employee e1 = new Employee("John",30);
         Employee e2 = new Employee("Jerome",20);
         Employee e3 = new Employee("Marius",40);
 
@@ -67,13 +67,13 @@ public class Main {
         employeesManagement.addEmployee(e3);
 
 
-        Task t1 =new ComplexTask("b","c",11,12,"aa");
-        Task t2= new SimpleTask("a","b",0,1);
-        Task t3 =new ComplexTask("c","d",10,20,"bb");
-
-        tasksManagement.addTask(t1);
-        tasksManagement.addTask(t2);
-        tasksManagement.addTask(t3);
+        Task t1 =new ComplexTask("Uncompleted","c",11,12,"aa");
+        Task t2= new SimpleTask("Uncompleted","b",0,1);
+        Task t3 =new ComplexTask("Completed","d",10,20,"bb");
+        List<Task> tasks=new ArrayList<>();
+        tasks.add(t1);
+        tasks.add(t2);
+        tasks.add(t3);
 
         tasksManagement.assignTaskToEmployee(e1.getIdEmployee(),t1);
         tasksManagement.assignTaskToEmployee(e1.getIdEmployee(),t2);
@@ -81,15 +81,29 @@ public class Main {
         tasksManagement.assignTaskToEmployee(e2.getIdEmployee(),t2);
         tasksManagement.assignTaskToEmployee(e3.getIdEmployee(),t3);
 
-        for(Map.Entry<Employee, List<Task>> entry: tasksManagement.getMapOfTasks().entrySet()){
-            //System.out.println(entry.getKey().toString());
-            //System.out.println(entry.getValue());
+        Utility utility = new Utility(tasksManagement,employeesManagement);
+
+
+        Map<String, Map<String, Integer>> map = utility.calculateStatusOfTaskPerEmployee(employees);
+
+        for (Map.Entry<String, Map<String, Integer>> entry : map.entrySet()) {
+            // Afișează numele angajatului (cheia principală)
+            String employeeName = entry.getKey();
+            System.out.println("Employee: " + employeeName);
+
+            // Iterează prin harta interioară (statusuri și numărul acestora)
+            Map<String, Integer> statusMap = entry.getValue();
+            for (Map.Entry<String, Integer> statusEntry : statusMap.entrySet()) {
+                // Afișează statusul sarcinii și numărul de sarcini cu acel status
+                String status = statusEntry.getKey();
+                int count = statusEntry.getValue();
+                System.out.println("  Status: " + status + ", Count: " + count);
+            }
+            System.out.println(); // Linie goală pentru a separa angajații
         }
 
-        Utility utility = new Utility(tasksManagement,employeesManagement);
-        utility.sortByNrOfHoursGt40(employees);
 
-         */
+
 
 
 

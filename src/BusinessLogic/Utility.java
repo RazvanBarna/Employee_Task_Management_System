@@ -3,10 +3,7 @@ package BusinessLogic;
 import DataModel.Employee;
 import DataModel.Task;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 public class Utility {
     private EmployeesManagement employeesManagement ;
@@ -26,6 +23,54 @@ public class Utility {
             System.out.println(employee.toString());
         }
         return employees;
+    }
+
+    private HashMap<String , Map<String, Integer>> initMap(List<Employee> employees){
+        HashMap<String , Map<String, Integer>> map= new HashMap<String , Map<String, Integer>>();
+        for(Employee employee : employees){
+            map.put(employee.getName(),new HashMap<>());
+
+        }
+        return map;
+    }
+
+    private List<Task> getListOfTaskWithEmployeessName(String employeeName){
+        for(Map.Entry<Employee,List<Task>> entry: tasksManagement.getMapOfTasks().entrySet()){
+            if(entry.getKey().getName().equals(employeeName)){
+                return entry.getValue();
+            }
+        }
+        return null;
+    }
+
+    private int nrOfStatusTasks(List<Task> tasks,String status){
+        int totalNumber=0;
+        for(Task task : tasks){
+            if(task.getStatusTask().equals(status)){
+                totalNumber++;
+            }
+        }
+        return totalNumber;
+    }
+
+    private HashMap<String , Integer> initInnerHash(List<Task> tasks){
+        HashMap<String, Integer> map = new HashMap<>();
+        map.put("Completed", nrOfStatusTasks(tasks,"Completed"));
+        map.put("Uncompleted", nrOfStatusTasks(tasks,"Uncompleted"));
+        return map;
+    }
+
+    public Map<String,Map<String,Integer>> calculateStatusOfTaskPerEmployee(List<Employee> employees){
+        HashMap<String , Map<String, Integer>> map = initMap(employees);
+        for(Map.Entry<String , Map<String, Integer>> entry: map.entrySet()){
+            if(getListOfTaskWithEmployeessName(entry.getKey()) == null){
+                entry.setValue(new HashMap<>());
+            }
+            HashMap <String, Integer> innerHash = initInnerHash(getListOfTaskWithEmployeessName(entry.getKey()));
+            entry.setValue(innerHash);
+        }
+
+        return map;
     }
 
     class CompareByHours implements Comparator<Employee>{
