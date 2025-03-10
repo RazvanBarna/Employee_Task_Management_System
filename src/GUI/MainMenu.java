@@ -5,6 +5,7 @@ import BusinessLogic.TasksManagement;
 import BusinessLogic.Utility;
 
 import javax.swing.*;
+import javax.swing.text.View;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -43,7 +44,7 @@ public class MainMenu extends JFrame {
         addTaskButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new AddTaskPage(employeesManagement,tasksManagement,utility);
+               // new AddTaskPage(employeesManagement,tasksManagement,utility);
                 dispose();
             }
         });
@@ -59,21 +60,24 @@ public class MainMenu extends JFrame {
         modifyStatusOfTasksButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                new ModifiyStatusPage(tasksManagement,employeesManagement,utility);
+                dispose();
             }
         });
 
         viewEmployeesButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                new ViewEmployeesPage(tasksManagement,employeesManagement,utility);
+                dispose();
             }
         });
 
         viewStatisticsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                new ViewStatisticsPage(tasksManagement,employeesManagement,utility);
+                dispose();
             }
         });
 

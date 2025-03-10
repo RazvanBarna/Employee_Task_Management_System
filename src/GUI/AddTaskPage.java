@@ -27,15 +27,15 @@ public class AddTaskPage extends JFrame {
     private JButton simpleTaskButton;
     private JLabel description;
     private JLabel errorMessage;
-    private int whichTaskIsWanted=0;
+    private int whichTaskIsWanted = 0;
 
-    public AddTaskPage(EmployeesManagement employeesManagement, TasksManagement tasksManagement,Utility utility){
+    public AddTaskPage(EmployeesManagement employeesManagement, TasksManagement tasksManagement, Utility utility) {
         this.employeesManagement = employeesManagement;
         this.tasksManagement = tasksManagement;
         this.utility = utility;
 
         setContentPane(addTaskPanel);
-        setSize(700,700);
+        setSize(700, 700);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
@@ -45,12 +45,12 @@ public class AddTaskPage extends JFrame {
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new MainMenu(employeesManagement,tasksManagement,utility);
+                new MainMenu(employeesManagement, tasksManagement, utility);
                 dispose();
             }
         });
 
-        addButton.addActionListener(new ActionListener() {
+       /* addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
@@ -74,11 +74,11 @@ public class AddTaskPage extends JFrame {
                     int startHour = Integer.parseInt(fieldInformation3);
                     int endHour = Integer.parseInt(fieldInformation4);
                          if(whichTaskIsWanted == 1) {
-                             tasksManagement.addTask(new SimpleTask(fieldInformation2, fieldInformation1, startHour, endHour));
+                            // tasksManagement.addTaskInAplication(new SimpleTask(fieldInformation2, fieldInformation1, startHour, endHour));
                              errorMessage.setText("Successfully added simple task!");
                          }
                          else if (whichTaskIsWanted == 2) {
-                            tasksManagement.addTask(new ComplexTask(fieldInformation2, fieldInformation1, startHour, endHour, fieldInformation5));
+                            //tasksManagement.addTaskInAplication(new ComplexTask(fieldInformation2, fieldInformation1, startHour, endHour, fieldInformation5));
                             errorMessage.setText("Successfully added complex task!");
                          } else {
                             errorMessage.setText("Please select which type of task you want to add !");
@@ -117,5 +117,8 @@ public class AddTaskPage extends JFrame {
             }
         });
 
+    }
+
+        */
     }
 }

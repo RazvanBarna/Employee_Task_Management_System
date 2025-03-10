@@ -83,7 +83,7 @@ public class AssignTaskToEmployeePage extends JFrame {
                    if(taskChosen == null || employeeChosen == null){
                        throw new RuntimeException("Please select in both comboboxes");
                    }
-                   tasksManagement.assignTaskToEmployee(employeeChosen.getIdEmployee(),taskChosen);
+                   //tasksManagement.assignTaskToEmployee(employeeChosen.getIdEmployee(),taskChosen);
                    employeesManagement.calculateEmployeeWorkDuration(employeeChosen.getIdEmployee());
                    for(Map.Entry<Employee, List<Task>> entry: tasksManagement.getMapOfTasks().entrySet()){
                        System.out.println(entry.getKey().toString());

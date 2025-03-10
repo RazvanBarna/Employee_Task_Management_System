@@ -7,15 +7,11 @@ public abstract class Task implements Serializable {
     private int idTask;
     private String statusTask;
     private String title;
-    private int startHour;
-    private int endHour;
 
-    public Task(String statusTask, String title, int startHour, int endHour) {
+    public Task(String statusTask, String title) {
         this.idTask=idStatic++;
         this.statusTask = statusTask;
         this.title = title;
-        this.startHour = startHour;
-        this.endHour = endHour;
     }
 
     public Task(){};
@@ -26,14 +22,6 @@ public abstract class Task implements Serializable {
 
     public int getIdTask() {
         return idTask;
-    }
-
-    public int getStartHour() {
-        return startHour;
-    }
-
-    public int getEndHour() {
-        return endHour;
     }
 
     public static int getIdStatic() {
@@ -51,7 +39,8 @@ public abstract class Task implements Serializable {
     public abstract int estimateDuration();
 
     public String toString(){
-        return this.idTask+" "+this.title+" start hour:"+this.startHour+" end hour:"+this.endHour+" status:"+this.statusTask;
+        return String.format("ID: %d, Title: %s, Status: %s",
+                idTask, title, statusTask);
     }
 
 

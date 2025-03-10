@@ -23,7 +23,7 @@ public class EmployeesManagement {
         else {
             //TO DO : VeRIFY DUPLICATE
             tasksManagement.getMapOfTasks().put(employee , new ArrayList<Task>());
-            serializationOperations.writeFile(employee);
+           // serializationOperations.writeFile(employee);
         }
     }
 
@@ -47,7 +47,7 @@ public class EmployeesManagement {
 
     private void setWordDuration(Employee employee , int nrHours){
         if (employee !=null){
-            employee.setNrHoursWorks(nrHours);
+            //employee.setNrHoursWorks(nrHours);
         }
         else {
             errorMessageEmployee=" this employee does not exist";
@@ -58,7 +58,9 @@ public class EmployeesManagement {
         if(tasks == null) return 0;
         int totalOfHours=0;
         for(Task task : tasks){
-            totalOfHours+=task.estimateDuration();
+            if(task.getStatusTask().equals("Uncompleted")) {
+                totalOfHours += task.estimateDuration();
+            }
         }
         return totalOfHours;
     }

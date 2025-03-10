@@ -1,113 +1,54 @@
-import BusinessLogic.EmployeesManagement;
 import BusinessLogic.TasksManagement;
-import BusinessLogic.Utility;
-import DataAccess.SerializationOperations;
 import DataModel.ComplexTask;
 import DataModel.Employee;
 import DataModel.SimpleTask;
 import DataModel.Task;
-import GUI.MainMenu;
-import jdk.jshell.execution.Util;
 
-import javax.swing.*;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 public class Main {
     public static void main(String[] args) {
 
+        try {
 
-/*
-        Task t1 =new ComplexTask("b","c",11,12,"aa");
-        Task t2= new SimpleTask("a","b",0,1);
-        Task t3 =new ComplexTask("c","d",10,20,"bb");
-
-        tasksManagement.addTask(t1);
-        tasksManagement.addTask(t2);
-        tasksManagement.addTask(t3);
-
-        tasksManagement.assignTaskToEmployee(e1.getIdEmployee(),t1);
-        tasksManagement.assignTaskToEmployee(e1.getIdEmployee(),t2);
-        tasksManagement.assignTaskToEmployee(e1.getIdEmployee(),t3);
-        tasksManagement.assignTaskToEmployee(e2.getIdEmployee(),t2);
-        tasksManagement.assignTaskToEmployee(e3.getIdEmployee(),t3);
-
-        tasksManagement.modifyTaskStatus(e1.getIdEmployee(), t1.getIdTask(),"Completed");
-       System.out.println( employeesManagement.calculateEmployeeWorkDuration(1));
-
-        for(Map.Entry<Employee, List<Task>> entry: tasksManagement.getMapOfTasks().entrySet()){
-            System.out.println(entry.getKey().toString());
-            System.out.println(entry.getValue());
-        }
-
-        */
-
-        //TasksManagement tasksManagement = new TasksManagement();
-        //EmployeesManagement employeesManagement = new EmployeesManagement(tasksManagement);
-        //Utility utility = new Utility(tasksManagement,employeesManagement);
-        //new MainMenu(employeesManagement,tasksManagement,utility);
+            Employee employee1 = new Employee("John Doe", 30);
 
 
-        //SerializationOperations serializationOperations =  new SerializationOperations();
-        //serializationOperations.readAllObjectsFromFile("src/DataAccess/taskFile.txt");
-
-        Employee e1 = new Employee("John",30);
-        Employee e2 = new Employee("Jerome",20);
-        Employee e3 = new Employee("Marius",40);
-
-        TasksManagement tasksManagement = new TasksManagement();
-        EmployeesManagement employeesManagement = new EmployeesManagement(tasksManagement);
-        List<Employee> employees = new ArrayList<Employee>();
-        employees.add(e1);
-        employees.add(e2);
-        employees.add(e3);
-        employeesManagement.addEmployee(e1);
-        employeesManagement.addEmployee(e2);
-        employeesManagement.addEmployee(e3);
+            Task task1 = new SimpleTask("Complete documentation", "Pending", 0, 1);
+            Task task2 = new ComplexTask("Develop feature X", "In Progress");
 
 
-        Task t1 =new ComplexTask("Uncompleted","c",11,12,"aa");
-        Task t2= new SimpleTask("Uncompleted","b",0,1);
-        Task t3 =new ComplexTask("Completed","d",10,20,"bb");
-        List<Task> tasks=new ArrayList<>();
-        tasks.add(t1);
-        tasks.add(t2);
-        tasks.add(t3);
-
-        tasksManagement.assignTaskToEmployee(e1.getIdEmployee(),t1);
-        tasksManagement.assignTaskToEmployee(e1.getIdEmployee(),t2);
-        tasksManagement.assignTaskToEmployee(e1.getIdEmployee(),t3);
-        tasksManagement.assignTaskToEmployee(e2.getIdEmployee(),t2);
-        tasksManagement.assignTaskToEmployee(e3.getIdEmployee(),t3);
-
-        Utility utility = new Utility(tasksManagement,employeesManagement);
-
-
-        Map<String, Map<String, Integer>> map = utility.calculateStatusOfTaskPerEmployee(employees);
-
-        for (Map.Entry<String, Map<String, Integer>> entry : map.entrySet()) {
-            // Afișează numele angajatului (cheia principală)
-            String employeeName = entry.getKey();
-            System.out.println("Employee: " + employeeName);
-
-            // Iterează prin harta interioară (statusuri și numărul acestora)
-            Map<String, Integer> statusMap = entry.getValue();
-            for (Map.Entry<String, Integer> statusEntry : statusMap.entrySet()) {
-                // Afișează statusul sarcinii și numărul de sarcini cu acel status
-                String status = statusEntry.getKey();
-                int count = statusEntry.getValue();
-                System.out.println("  Status: " + status + ", Count: " + count);
+            TasksManagement tasksManagement = new TasksManagement();
+            tasksManagement.addTaskInApplication(task1);
+            tasksManagement.addTaskInApplication(task2);
+            for(Task task : tasksManagement.getListOfTaskUnssigned()){
+                System.out.println(task.toString());
             }
-            System.out.println(); // Linie goală pentru a separa angajații
+            tasksManagement.getMapOfTasks().put(employee1,new ArrayList<>());
+
+
+             //Verificăm dacă task-urile au fost adăugate
+            //System.out.println("List of unassigned tasks:");
+            //tasksManagement.getListOfTaskUnssigned().forEach(task -> System.out.println(task.toString()));
+
+            // Testarea metodei assignTaskToEmployee
+            tasksManagement.assignTaskToEmployee(employee1.getIdEmployee(), task1); // Atribuim task1 angajatului
+            tasksManagement.assignTaskToEmployee(employee1.getIdEmployee(), task2); // Atribuim task2 angajatului
+
+            // Verificăm lista de task-uri atribuite angajatului
+            //System.out.println("Tasks assigned to employee " + employee1.getName() + ":");
+            //tasksManagement.getMapOfTasks().get(employee1).forEach(task -> System.out.println(task.toString()));
+
+            // Modificăm statusul unui task
+            tasksManagement.modifyTaskStatus(employee1.getIdEmployee(), task1.getIdTask(), "Completed");
+
+            // Verificăm dacă statusul a fost modificat
+            //System.out.println("Status for task1 after modification: " + task1.getStatusTask());
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
 
-
-
-
-
-
-
-    }
-}
+             }
+        }
