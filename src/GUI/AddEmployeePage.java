@@ -54,7 +54,7 @@ public class AddEmployeePage extends JFrame {
                         try {
                             int ageOfEmployee = Integer.parseInt(fieldInfornation2Age); // Parcurgem conversia
                             Employee employee = new Employee(fieldInformation1Name, ageOfEmployee);
-                            employeesManagement.addEmployee(employee);
+                            //employeesManagement.addEmployee(employee);
                             fieldMessageError.setBackground(Color.GREEN);
                             fieldMessageError.setText("Successfully added!");
                         } catch (NumberFormatException ex) {

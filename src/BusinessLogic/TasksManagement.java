@@ -19,6 +19,10 @@ public class TasksManagement {
         return listOfTaskUnssigned;
     }
 
+    public void setMapOfTasks(Map<Employee, List<Task>> mapOfTasks) {
+        this.mapOfTasks = mapOfTasks;
+    }
+
     public String getErrorMessageTaskk() {
         return errorMessageTaskk;
     }
@@ -42,7 +46,7 @@ public class TasksManagement {
         }
     }
 
-    private List<Task> findListOfTasksFromMap(int idEmployee){
+    protected List<Task> findListOfTasksFromMap(int idEmployee){
         for(Map.Entry<Employee,List<Task>> entry: mapOfTasks.entrySet()){
             if( entry.getKey().getIdEmployee() ==idEmployee ){
                 return entry.getValue();
@@ -91,12 +95,19 @@ public class TasksManagement {
         return null;
     }
 
+    private void modifyStatusForList(List<Task> tasks, String status){
+        for(Task task : tasks){
+            task.setStatusTask(status);
+        }
+    }
+
     public void modifyTaskStatus(int idEmployee,int idTask,String statusModified){
         List<Task> tasksOfEmployer = findListOfTasksFromMap(idEmployee);
         Task taskToModify = findTaskInListToModify(tasksOfEmployer,idTask);
-
         if (taskToModify!=null) {
-            taskToModify.setStatusTask(statusModified);
+            if(taskToModify instanceof ComplexTask){
+                modifyStatusForList(((ComplexTask) taskToModify).getTasksOfaComplexTask(),statusModified);
+            }
         } else {
         errorMessageTaskk = "Task with the given ID does not exist for this employee.";
         }

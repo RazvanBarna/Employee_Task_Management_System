@@ -46,7 +46,7 @@ public class ViewStatisticsPage extends JFrame {
         pressToSortAscendingButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                utility.sortByNrOfHoursGt40(employees);
+                //  utility.sortByNrOfHoursGt40(employees);
                 setTable(employees);
             }
         });
@@ -65,7 +65,7 @@ public class ViewStatisticsPage extends JFrame {
         Object[][] data = new Object[30][3];
         int i=0;
         int index =0;
-        for (Map.Entry<String,Map<String,Integer>> entry : utility.calculateStatusOfTaskPerEmployee(employees).entrySet()) {
+        for (Map.Entry<String,Map<String,Integer>> entry : utility.calculateStatusOfTaskPerEmployee(tasksManagement.getMapOfTasks()).entrySet()) {
             data[index][0] = entry.getKey();
             data[index][1] = getNrTaskWithStatus(entry.getValue(),"Completed");
             data[index][2] = getNrTaskWithStatus(entry.getValue(),"Uncompleted");

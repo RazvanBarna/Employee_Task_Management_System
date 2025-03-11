@@ -14,6 +14,14 @@ public class ComplexTask extends Task{
 
     public ComplexTask(){};
 
+    public List<Task> getTasksOfaComplexTask() {
+        return tasksOfaComplexTask;
+    }
+
+    public void setTasksOfaComplexTask(List<Task> tasksOfaComplexTask) {
+        this.tasksOfaComplexTask = tasksOfaComplexTask;
+    }
+
     public void addTask(Task task){
         tasksOfaComplexTask.add(task);
     }

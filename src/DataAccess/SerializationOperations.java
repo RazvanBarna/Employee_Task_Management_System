@@ -13,7 +13,7 @@ import java.util.Map;
 public class SerializationOperations {
 
     private static void initWriteFile(String fileName,Object objectToWrite) throws Exception{
-        FileOutputStream fileOutputStream = new FileOutputStream(fileName,true);
+        FileOutputStream fileOutputStream = new FileOutputStream(fileName,false);
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
         objectOutputStream.writeObject(objectToWrite);
         objectOutputStream.flush();
