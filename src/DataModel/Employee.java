@@ -1,16 +1,16 @@
 package DataModel;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class Employee implements Serializable {
     private String name;
-    private static int idStatic=1;
     private int idEmployee;
     private int age;
 
-    public Employee(String name, int age) {
+    public Employee(String name, int age,int idEmployee) {
         this.name = name;
-        this.idEmployee = idStatic++;
+        this.idEmployee = idEmployee;
         this.age = age;
     }
 
@@ -35,4 +35,14 @@ public class Employee implements Serializable {
         return idEmployee;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Employee employee = (Employee) obj;
+        if (idEmployee == employee.getIdEmployee()) {
+            return true;
+        }
+        return false;
+    }
 }

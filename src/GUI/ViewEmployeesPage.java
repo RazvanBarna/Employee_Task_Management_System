@@ -38,7 +38,7 @@ public class ViewEmployeesPage extends JFrame {
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new MainMenu(employeesManagement, tasksManagement, utility);
+               // new MainMenu(employeesManagement, tasksManagement, utility);
                 dispose();
             }
         });

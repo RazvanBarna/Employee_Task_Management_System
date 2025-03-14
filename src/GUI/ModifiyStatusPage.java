@@ -3,14 +3,12 @@ package GUI;
 import BusinessLogic.EmployeesManagement;
 import BusinessLogic.TasksManagement;
 import BusinessLogic.Utility;
-import DataModel.ComplexTask;
-import DataModel.SimpleTask;
+import DataModel.Employee;
 import DataModel.Task;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ModifiyStatusPage extends JFrame {
@@ -21,34 +19,25 @@ public class ModifiyStatusPage extends JFrame {
     private JButton changeStatusToUncompletedButton;
     private JButton backButton;
     private JLabel errorLabel;
-    private Utility utility;
-    private EmployeesManagement employeesManagement;
-    private  TasksManagement tasksManagement;
+    private JComboBox<Employee> comboboxEmployee;
 
-    public ModifiyStatusPage(TasksManagement tasksManagement, EmployeesManagement employeesManagement, Utility utility){
-        this.tasksManagement = tasksManagement;
-        this.employeesManagement = employeesManagement;
-        this.utility = utility;
 
+    public ModifiyStatusPage(){
         setContentPane(ModifyStatusPanel);
         setSize(700,700);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
-        //Task t1 =new ComplexTask("b","c",11,12,"aa");
-        //Task t2= new SimpleTask("a","b",0,1);
-        //Task t3 =new ComplexTask("c","d",10,20,"bb");
+        fillEmployeeCombobox();
+        Employee employee =(Employee) comboboxEmployee.getSelectedItem();
+        fillTaskCombobox(employee);
 
-        List<Task>tasks = new ArrayList<Task>();
-        //tasks.add(t1);
-       // tasks.add(t2);
-        //tasks.add(t3);
-        insertTaskInCombobox(tasks,comboBox1);
+
 
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new MainMenu(employeesManagement,tasksManagement,utility);
+                new MainMenuPage();
                 dispose();
             }
         });
@@ -57,9 +46,21 @@ public class ModifiyStatusPage extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try{
-                    changeStatusToTask(comboBox1,"Completed",tasks);
-                    insertTaskInCombobox(tasks,comboBox1);
+                    Employee employee = (Employee) comboboxEmployee.getSelectedItem();
+                    Task task = (Task) comboBox1.getSelectedItem();
+                    if(employee != null && task !=null) {
+                        MainMenuPage.getTasksManagement().modifyTaskStatus(employee.getIdEmployee(), task.getIdTask()
+                                , "Completed");
+                        errorLabel.setText("successfully changed status ");
+                    }
+                    else throw new RuntimeException("Select a task and an employee");
+                    fillTaskCombobox(employee);
+                    fillEmployeeCombobox();
+
                 }catch (RuntimeException ex){
+                    ex.printStackTrace();
+                    errorLabel.setText(ex.getMessage());
+                }catch (Exception ex){
                     ex.printStackTrace();
                     errorLabel.setText(ex.getMessage());
                 }
@@ -70,33 +71,63 @@ public class ModifiyStatusPage extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try{
-                    changeStatusToTask(comboBox1,"Uncompleted",tasks);
-                    insertTaskInCombobox(tasks,comboBox1);
+                    Employee employee = (Employee) comboboxEmployee.getSelectedItem();
+                    Task task = (Task) comboBox1.getSelectedItem();
+                    if(employee != null && task !=null) {
+                        MainMenuPage.getTasksManagement().modifyTaskStatus(employee.getIdEmployee(), task.getIdTask()
+                                , "Uncompleted");
+                        errorLabel.setText("successfully changed status ");
+                    }
+                    else throw new RuntimeException("Select a task and an employee");
+                    fillTaskCombobox(employee);
+                    fillEmployeeCombobox();
+
                 }catch (RuntimeException ex){
                     ex.printStackTrace();
                     errorLabel.setText(ex.getMessage());
                 }
+                catch (Exception ex){
+                    ex.printStackTrace();
+                    errorLabel.setText(ex.getMessage());
+                }
+
+            }
+        });
+        comboboxEmployee.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Employee selectedEmployee = (Employee) comboboxEmployee.getSelectedItem();
+
+                comboBox1.removeAllItems();
+                if (selectedEmployee != null) {
+                    fillTaskCombobox(selectedEmployee);
+                }
+
             }
         });
     }
 
-
-    private void insertTaskInCombobox(List<Task> allTasks,JComboBox<Task> comboBox1){
-        comboBox1.removeAllItems();
-        for(Task task : allTasks){
-            comboBox1.addItem(task);
+    private void fillEmployeeCombobox(){
+        try {
+            comboboxEmployee.removeAllItems();
+            List<Employee> employees = MainMenuPage.getTasksManagement().getListOfEmployeesFromMap();
+            for(Employee employee: employees)
+                comboboxEmployee.addItem(employee);
+        }catch (Exception e){
+            e.printStackTrace();
+            errorLabel.setText(e.getMessage());
         }
     }
 
-    private void changeStatusToTask(JComboBox<Task>comboBox1,String status,List<Task> allTasks) throws RuntimeException{
-        if(comboBox1.getSelectedItem() == null) throw  new RuntimeException("Please select which task you want to modify");
-        else {
-            Task taskSelected = (Task) comboBox1.getSelectedItem();
-            for(Task task : allTasks){
-                    if(task.equals(taskSelected)){
-                        task.setStatusTask(status);
-                    }
-            }
+    private void fillTaskCombobox(Employee employee){
+        try{
+            comboBox1.removeAllItems();
+            List<Task> tasks = MainMenuPage.getTasksManagement().findListOfTasksFromMap(employee.getIdEmployee());
+            for(Task task : tasks)
+                comboBox1.addItem(task);
+        }catch (Exception e){
+            e.printStackTrace();
+            errorLabel.setText(e.getMessage());
         }
     }
 }

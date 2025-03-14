@@ -1,13 +1,9 @@
-import BusinessLogic.TasksManagement;
-import BusinessLogic.Utility;
-import DataModel.*;
-
-import java.util.ArrayList;
-import java.util.List;
+import GUI.MainMenuPage;
 
 public class Main {
     public static void main(String[] args) {
-
+        new MainMenuPage();
+        //to do : sa vad cum fac cu id dupa ce inserez
 
     }
 }

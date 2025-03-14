@@ -1,10 +1,10 @@
 package DataModel;
 
-public class Schedule {
+public class HourRetainer {
     private Employee employee;
     private  int nrOfHoursWork;
 
-    public Schedule(Employee employee, int nrOfHoursWork){
+    public HourRetainer(Employee employee, int nrOfHoursWork){
         this.employee = employee;
         this.nrOfHoursWork = nrOfHoursWork;
     }

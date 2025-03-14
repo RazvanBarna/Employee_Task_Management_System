@@ -1,14 +1,14 @@
 package GUI;
 
-import BusinessLogic.EmployeesManagement;
-import BusinessLogic.TasksManagement;
-import BusinessLogic.Utility;
 import DataModel.Employee;
+import DataModel.Task;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
+import java.util.Map;
 
 public class AddEmployeePage extends JFrame {
     private JPanel AddEmployeePanel;
@@ -18,15 +18,11 @@ public class AddEmployeePage extends JFrame {
     private JButton backButton;
     private JButton addButton;
     private JLabel fieldMessageError;
-    private EmployeesManagement employeesManagement;
-    private TasksManagement tasksManagement;
-    private Utility utility;
+    private JLabel idLabel;
+    private JTextField textFieldId;
 
-    public AddEmployeePage(EmployeesManagement employeesManagement, TasksManagement tasksManagement,Utility utility){
-        this.employeesManagement = employeesManagement;
-        this.tasksManagement = tasksManagement;
-        this.utility = utility;
 
+    public AddEmployeePage(){
         setContentPane(AddEmployeePanel);
         setSize(500,500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -37,7 +33,7 @@ public class AddEmployeePage extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                new MainMenu(employeesManagement,tasksManagement,utility);
+                new MainMenuPage();
             }
         });
 
@@ -52,14 +48,16 @@ public class AddEmployeePage extends JFrame {
                     }
                     else {
                         try {
-                            int ageOfEmployee = Integer.parseInt(fieldInfornation2Age); // Parcurgem conversia
-                            Employee employee = new Employee(fieldInformation1Name, ageOfEmployee);
-                            //employeesManagement.addEmployee(employee);
-                            fieldMessageError.setBackground(Color.GREEN);
+                            int ageOfEmployee = Integer.parseInt(fieldInfornation2Age);
+                            int id =Integer.parseInt(textFieldId.getText());
+                            Employee employee = new Employee(fieldInformation1Name, ageOfEmployee,id);
+                            MainMenuPage.getEmployeesManagement().addEmployee(employee);
                             fieldMessageError.setText("Successfully added!");
                         } catch (NumberFormatException ex) {
-                            fieldMessageError.setText("Please insert a valid age!");
+                            fieldMessageError.setText("Please insert a valid age and a valid id!");
                             fieldMessageError.setBackground(Color.RED);
+                        } catch (Exception ex){
+                            fieldMessageError.setText(ex.getMessage());
                         }
                     }
             }

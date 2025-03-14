@@ -1,32 +1,38 @@
 package BusinessLogic;
 
 import DataModel.Employee;
-import DataModel.Schedule;
+import DataModel.HourRetainer;
 import DataModel.Task;
 
 import java.util.*;
 
 public class Utility {
-    //private EmployeesManagement employeesManagement ;
-    //private TasksManagement tasksManagement ;
 
-    //public Utility(TasksManagement tasksManagement,EmployeesManagement employeesManagement){
-      //  this.tasksManagement = tasksManagement;
-        //this.employeesManagement = employeesManagement;
-    //}
-
-    public static List<Schedule> sortByNrOfHoursGt40 (List<Schedule> schedules){
-        Collections.sort(schedules, new Comparator<Schedule>(){
-            public int compare(Schedule s1, Schedule s2) {
+    public static List<HourRetainer> sortByNrOfHoursGt40 (List<HourRetainer> schedules){
+        Collections.sort(schedules, new Comparator<HourRetainer>(){
+            public int compare(HourRetainer s1, HourRetainer s2) {
                 if (s1.getNrOfHoursWork() > s2.getNrOfHoursWork()) return 1;
                 if (s1.getNrOfHoursWork() < s2.getNrOfHoursWork()) return -1;
                 return 0;
             }
         });
-        for ( Schedule schedule : schedules){
+        for ( HourRetainer schedule : schedules){
             System.out.println(schedule.toString());
         }
         return schedules;
+    }
+
+    public static Map<String,Map<String,Integer>> calculateStatusOfTaskPerEmployee(Map<Employee,List<Task>> map){
+        List<Employee> employees = listOfEmployeesInMap(map);
+        Map<String , Map<String, Integer>> mapForStatus = initMap(employees);
+        for(Map.Entry<String , Map<String, Integer>> entry: mapForStatus.entrySet()){
+            if(getListOfTaskWithEmployeessName(entry.getKey(),map) == null){
+                entry.setValue(new HashMap<>());
+            }
+            HashMap <String, Integer> innerHash = initInnerHash(getListOfTaskWithEmployeessName(entry.getKey(),map));
+            entry.setValue(innerHash);
+        }
+        return mapForStatus;
     }
 
     private static Map<String , Map<String, Integer>> initMap(List<Employee> employees){
@@ -74,16 +80,4 @@ public class Utility {
         return employees;
     }
 
-    public static Map<String,Map<String,Integer>> calculateStatusOfTaskPerEmployee(Map<Employee,List<Task>> map){
-        List<Employee> employees = listOfEmployeesInMap(map);
-        Map<String , Map<String, Integer>> mapForStatus = initMap(employees);
-        for(Map.Entry<String , Map<String, Integer>> entry: mapForStatus.entrySet()){
-            if(getListOfTaskWithEmployeessName(entry.getKey(),map) == null){
-                entry.setValue(new HashMap<>());
-            }
-            HashMap <String, Integer> innerHash = initInnerHash(getListOfTaskWithEmployeessName(entry.getKey(),map));
-            entry.setValue(innerHash);
-        }
-        return mapForStatus;
-    }
 }

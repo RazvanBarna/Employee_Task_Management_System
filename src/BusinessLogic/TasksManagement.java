@@ -4,6 +4,7 @@ import DataModel.ComplexTask;
 import DataModel.Employee;
 import DataModel.Task;
 
+import java.io.File;
 import java.util.*;
 
 public class TasksManagement {
@@ -14,6 +15,31 @@ public class TasksManagement {
     public Map<Employee, List<Task>> getMapOfTasks() {
         return mapOfTasks;
     }
+
+    public void serializeTaskList() throws Exception{
+        SerializationOperations.writeFile(this.listOfTaskUnssigned);
+    }
+
+    public void deserializeTaskList() throws Exception{
+        File file = new File("src/DataAccess/taskFile.txt");
+        if(file.length()> 0) {
+            this.listOfTaskUnssigned = (List<Task>) SerializationOperations.readFile("src/DataAccess/taskFile.txt");
+        }
+        else this.listOfTaskUnssigned = new ArrayList<>();
+    }
+
+    public void serializeMap() throws Exception{
+        SerializationOperations.writeFile(this.mapOfTasks);
+    }
+
+    public void deserializeMap() throws Exception{
+        File file = new File("src/DataAccess/mapFile.txt");
+        if(file.length()> 0) {
+            this.mapOfTasks = (Map<Employee, List<Task>>) SerializationOperations.readFile("src/DataAccess/mapFile.txt");
+        }
+        else this.mapOfTasks = new HashMap<>();
+    }
+
 
     public List<Task> getListOfTaskUnssigned() {
         return listOfTaskUnssigned;
@@ -28,31 +54,76 @@ public class TasksManagement {
     }
 
     public void addTaskInApplication(Task task) throws Exception{
-       //this.listOfTaskUnssigned =(List<Task>) SerializationOperations.readFile("src/DataAccess/taskFile.txt");
         if(task==null){
             errorMessageTaskk ="The task must have an input.";
+            throw new Exception(errorMessageTaskk);
         }
         else {
+            this.deserializeTaskList();
             if(!hasAlreadyTheTask(this.listOfTaskUnssigned,task)){
                 listOfTaskUnssigned.add(task);
-                SerializationOperations.writeFile(listOfTaskUnssigned);
-                //System.out.println("Tasks after serialization: " + listOfTaskUnssigned);
-                this.listOfTaskUnssigned = (List<Task>) SerializationOperations.readFile("src/DataAccess/taskFile.txt");
-                //System.out.println("Tasks after deserialization: " + listOfTaskUnssigned);
+                this.serializeTaskList();
             }
             else {
                 errorMessageTaskk = " This task already exists";
+                throw new Exception(errorMessageTaskk);
             }
         }
     }
 
-    protected List<Task> findListOfTasksFromMap(int idEmployee){
-        for(Map.Entry<Employee,List<Task>> entry: mapOfTasks.entrySet()){
-            if( entry.getKey().getIdEmployee() ==idEmployee ){
-                return entry.getValue();
-            }
+    public void addTaskInComplexTask(ComplexTask complexTask, Task task) throws Exception{
+        if(task==null){
+            errorMessageTaskk ="The task must have an input.";
         }
-        return null;
+        else {
+                this.deserializeTaskList();
+                this.listOfTaskUnssigned.remove(task);
+                for(ComplexTask complexTask1 : this.fillAllComplexTaskFromMapAndUnassigned()){
+                    if(complexTask1.equals(complexTask)){
+                        complexTask1.getTasksOfComplexTask().add(task);
+                    }
+                }
+
+
+                this.serializeTaskList();
+            }
+            if(errorMessageTaskk !=null) {
+                throw new Exception(errorMessageTaskk);
+            }
+            this.deserializeTaskList();
+        }
+
+    public void deleteTaskInComplexTask(ComplexTask complexTask, Task task) throws Exception{
+        if(task==null){
+            errorMessageTaskk ="The task must have an input.";
+            return;
+        }
+        List<ComplexTask> listOfComplexTasks = this.fillAllComplexTaskFromMapAndUnassigned();
+
+        for(Task task1 : listOfComplexTasks)
+            if(task1 instanceof ComplexTask)
+                if(task1.equals(complexTask))
+                  ((ComplexTask) task1).getTasksOfComplexTask().remove(task);
+
+
+        this.listOfTaskUnssigned.add(task);
+        this.serializeTaskList();
+
+        if(errorMessageTaskk !=null)
+            throw new Exception(errorMessageTaskk);
+
+        this.deserializeMap();
+        this.deserializeTaskList();
+
+    }
+
+    public List<Employee> getListOfEmployeesFromMap() throws Exception{
+        this.deserializeMap();
+        List<Employee> employees= new ArrayList<>();
+        for(Map.Entry<Employee,List<Task>> entry: mapOfTasks.entrySet())
+            employees.add(entry.getKey());
+
+        return employees;
     }
 
     private boolean hasAlreadyTheTask(List<Task> tasksOfEmployer,Task task){
@@ -69,18 +140,24 @@ public class TasksManagement {
         return false;
     }
 
+    public List<Task> findListOfTasksFromMap(int idEmployee) throws Exception{
+        this.deserializeMap();
+        for(Map.Entry<Employee,List<Task>> entry: mapOfTasks.entrySet())
+            if( entry.getKey().getIdEmployee() == idEmployee )
+                return entry.getValue();
+
+        return null;
+    }
+
     public void assignTaskToEmployee(int idEmployee,Task currentTask) throws Exception{
         List<Task> tasksOfEmployer = findListOfTasksFromMap(idEmployee);
-
-        if(tasksOfEmployer == null){
+        if(tasksOfEmployer == null)
             errorMessageTaskk = "The employee with this id does not exist !";
-        }
-        else if(hasAlreadyTheTask(tasksOfEmployer,currentTask)) throw  new RuntimeException("The task is already assign to this employee");
-        else if(!hasAlreadyTheTask(this.listOfTaskUnssigned,currentTask)){
+        else {
             tasksOfEmployer.add(currentTask);
             listOfTaskUnssigned.remove(currentTask);
-            SerializationOperations.writeFile(listOfTaskUnssigned);
-            this.listOfTaskUnssigned = (List<Task>) SerializationOperations.readFile("src/DataAccess/taskFile.txt");
+            this.serializeTaskList();
+            this.serializeMap();
         }
     }
 
@@ -95,22 +172,47 @@ public class TasksManagement {
         return null;
     }
 
-    private void modifyStatusForList(List<Task> tasks, String status){
-        for(Task task : tasks){
-            task.setStatusTask(status);
-        }
-    }
-
-    public void modifyTaskStatus(int idEmployee,int idTask,String statusModified){
+    public void modifyTaskStatus(int idEmployee, int idTask, String statusModified) throws Exception{
         List<Task> tasksOfEmployer = findListOfTasksFromMap(idEmployee);
         Task taskToModify = findTaskInListToModify(tasksOfEmployer,idTask);
-        if (taskToModify!=null) {
-            if(taskToModify instanceof ComplexTask){
-                modifyStatusForList(((ComplexTask) taskToModify).getTasksOfaComplexTask(),statusModified);
+        taskToModify.setStatusTask(statusModified);
+        this.serializeMap();
+    }
+
+
+    public List<ComplexTask> fillAllComplexTaskFromMapAndUnassigned() throws Exception{
+        List<ComplexTask> complexTasks = new ArrayList<>();
+
+        this.deserializeTaskList();
+        for(Task task : this.listOfTaskUnssigned)
+            if (task instanceof ComplexTask)
+                allComplexTasksRecursively((ComplexTask) task,complexTasks);
+
+        this.deserializeMap();
+        for (Map.Entry<Employee, List<Task>> entry : this.mapOfTasks.entrySet())
+            for (Task task : entry.getValue())
+                if (task instanceof ComplexTask && !complexTasks.contains(task))
+                    allComplexTasksRecursively((ComplexTask) task,complexTasks);
+
+        int a=0;
+        for(ComplexTask complexTask :complexTasks){
+            System.out.println(a++);
+            System.out.println(complexTask);
+            System.out.println("Inainte de for 1");
+            for(Task task : complexTask.getTasksOfComplexTask()){
+            //    System.out.println(task);
             }
-        } else {
-        errorMessageTaskk = "Task with the given ID does not exist for this employee.";
         }
+
+        return complexTasks;
+    }
+
+    private void allComplexTasksRecursively(ComplexTask complexTaskFromList,List<ComplexTask> complexTasks) {
+        complexTasks.add(complexTaskFromList);
+        for (Task task : complexTaskFromList.getTasksOfComplexTask())
+            if (task instanceof ComplexTask)
+                if (!task.equals(complexTaskFromList))
+                    allComplexTasksRecursively((ComplexTask) task, complexTasks);
     }
 
 }

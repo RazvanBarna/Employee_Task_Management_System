@@ -2,14 +2,12 @@ package GUI;
 
 import BusinessLogic.EmployeesManagement;
 import BusinessLogic.TasksManagement;
-import BusinessLogic.Utility;
 
 import javax.swing.*;
-import javax.swing.text.View;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class MainMenu extends JFrame {
+public class MainMenuPage extends JFrame {
     private JLabel fieldTitle;
     private JButton viewEmployeesButton;
     private JButton addEmployeeButton;
@@ -18,14 +16,10 @@ public class MainMenu extends JFrame {
     private JButton modifyStatusOfTasksButton;
     private JButton viewStatisticsButton;
     private JPanel Panel;
-    private TasksManagement tasksManagement;
-    private EmployeesManagement employeesManagement;
-    private Utility utility;
+    private static TasksManagement tasksManagement = new TasksManagement();
+    private static EmployeesManagement employeesManagement = new EmployeesManagement(tasksManagement);
 
-    public MainMenu(EmployeesManagement employeesManagement,TasksManagement tasksManagement,Utility utility){
-        this.tasksManagement= tasksManagement;
-        this.employeesManagement = employeesManagement;
-        this.utility = utility;
+    public MainMenuPage(){
 
         setContentPane(Panel);
         setSize(500,500);
@@ -36,7 +30,7 @@ public class MainMenu extends JFrame {
         addEmployeeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new AddEmployeePage(employeesManagement,tasksManagement,utility);
+                new AddEmployeePage();
                 dispose();
             }
         });
@@ -44,7 +38,7 @@ public class MainMenu extends JFrame {
         addTaskButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-               // new AddTaskPage(employeesManagement,tasksManagement,utility);
+                new AddTaskPage();
                 dispose();
             }
         });
@@ -52,7 +46,7 @@ public class MainMenu extends JFrame {
         assignTasksButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new AssignTaskToEmployeePage(tasksManagement,employeesManagement,utility);
+                new AssignTaskToEmployeePage();
                 dispose();
             }
         });
@@ -60,7 +54,7 @@ public class MainMenu extends JFrame {
         modifyStatusOfTasksButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new ModifiyStatusPage(tasksManagement,employeesManagement,utility);
+                new ModifiyStatusPage();
                 dispose();
             }
         });
@@ -68,7 +62,7 @@ public class MainMenu extends JFrame {
         viewEmployeesButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new ViewEmployeesPage(tasksManagement,employeesManagement,utility);
+                //new ViewEmployeesPage(tasksManagement,employeesManagement,utility);
                 dispose();
             }
         });
@@ -76,11 +70,33 @@ public class MainMenu extends JFrame {
         viewStatisticsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new ViewStatisticsPage(tasksManagement,employeesManagement,utility);
+                //new ViewStatisticsPage(tasksManagement,employeesManagement,utility);
                 dispose();
             }
         });
 
     }
+
+    public static EmployeesManagement getEmployeesManagement() {
+        return employeesManagement;
+    }
+
+    public static void setEmployeesManagement(EmployeesManagement employeesManagement) {
+        MainMenuPage.employeesManagement = employeesManagement;
+    }
+
+
+    public static TasksManagement getTasksManagement() {
+        return tasksManagement;
+    }
+
+    public static void refresh() throws Exception{
+        getTasksManagement().serializeTaskList();
+        getTasksManagement().serializeMap();
+
+        getTasksManagement().deserializeTaskList();
+        getTasksManagement().deserializeMap();
+    }
+
 }
 

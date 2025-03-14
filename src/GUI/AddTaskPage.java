@@ -1,8 +1,5 @@
 package GUI;
 
-import BusinessLogic.EmployeesManagement;
-import BusinessLogic.TasksManagement;
-import BusinessLogic.Utility;
 import DataModel.ComplexTask;
 import DataModel.SimpleTask;
 
@@ -11,85 +8,84 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class AddTaskPage extends JFrame {
-    private TasksManagement tasksManagement;
-    private EmployeesManagement employeesManagement;
-    private Utility utility;
     private JPanel addTaskPanel;
     private JLabel fieldTitle;
-    private JTextField textField1;
-    private JTextField textField2;
-    private JTextField textField3;
-    private JTextField textField4;
-    private JTextField textField5;
+    private JTextField titleField;
+    private JTextField statusField;
+    private JTextField startHourField;
+    private JTextField endHourField;
     private JButton backButton;
     private JButton addButton;
     private JButton complexTaskButton;
     private JButton simpleTaskButton;
-    private JLabel description;
     private JLabel errorMessage;
+    private JTextField idTaskField;
+    private JButton addTaskToComplexButton;
     private int whichTaskIsWanted = 0;
 
-    public AddTaskPage(EmployeesManagement employeesManagement, TasksManagement tasksManagement, Utility utility) {
-        this.employeesManagement = employeesManagement;
-        this.tasksManagement = tasksManagement;
-        this.utility = utility;
+    public AddTaskPage() {
 
         setContentPane(addTaskPanel);
         setSize(700, 700);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
-        description.setVisible(false);
-        textField5.setVisible(false);
+        startHourField.setVisible(true);
+        endHourField.setVisible(true);
 
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new MainMenu(employeesManagement, tasksManagement, utility);
+               new MainMenuPage();
                 dispose();
             }
         });
 
-       /* addButton.addActionListener(new ActionListener() {
+        addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    String fieldInformation1 = textField1.getText();
-                    String fieldInformation2 = textField2.getText();
-                    String fieldInformation3 = textField3.getText();
-                    String fieldInformation4 = textField4.getText();
-                    String fieldInformation5 = textField5.getText();
+                    String fieldTitle = titleField.getText();
+                    String fieldStaus = statusField.getText();
+                    String fieldStartH = startHourField.getText();
+                    String fieldEndH = endHourField.getText();
+                    String fieldId= idTaskField.getText();
 
-                    if( (fieldInformation1.isEmpty() || fieldInformation2.isEmpty() || fieldInformation3.isEmpty() || fieldInformation4.isEmpty()
-                        || fieldInformation5.isEmpty() ) && whichTaskIsWanted==2) {
+                    if( (fieldTitle.isEmpty() || fieldStaus.isEmpty() || fieldStartH.isEmpty() || fieldEndH.isEmpty()
+                         ) && whichTaskIsWanted==2) {
                         throw new RuntimeException("All filed must be completed!");
                     }
-                    else if ( (fieldInformation1.isEmpty() || fieldInformation2.isEmpty() || fieldInformation3.isEmpty() || fieldInformation4.isEmpty() ) && whichTaskIsWanted==1) {
+                    else if ( (fieldTitle.isEmpty() || fieldStaus.isEmpty() || fieldStartH.isEmpty() || fieldEndH.isEmpty() ) && whichTaskIsWanted==1) {
                         throw new RuntimeException("All filed must be completed!");
                     }
-                    if(! (fieldInformation2.equals("Uncompleted") || fieldInformation2.equals("Completed")))
+                    if(! (fieldStaus.equals("Uncompleted") || fieldStaus.equals("Completed")))
                     {
                         throw new RuntimeException("Task's status must be \"Completed\" or \"Uncompleted\" ");
                     }
-                    int startHour = Integer.parseInt(fieldInformation3);
-                    int endHour = Integer.parseInt(fieldInformation4);
-                         if(whichTaskIsWanted == 1) {
-                            // tasksManagement.addTaskInAplication(new SimpleTask(fieldInformation2, fieldInformation1, startHour, endHour));
-                             errorMessage.setText("Successfully added simple task!");
-                         }
-                         else if (whichTaskIsWanted == 2) {
-                            //tasksManagement.addTaskInAplication(new ComplexTask(fieldInformation2, fieldInformation1, startHour, endHour, fieldInformation5));
+                    int startHour = Integer.parseInt(fieldStartH);
+                    int endHour = Integer.parseInt(fieldEndH);
+                    int idTask = Integer.parseInt(fieldId);
+
+                    try {
+                        if (whichTaskIsWanted == 1) {
+                            MainMenuPage.getTasksManagement().addTaskInApplication(new SimpleTask(fieldStaus, fieldTitle, startHour, endHour, idTask));
+                            errorMessage.setText("Successfully added simple task!");
+                        } else if (whichTaskIsWanted == 2) {
+                            MainMenuPage.getTasksManagement().addTaskInApplication(new ComplexTask(fieldStaus, fieldTitle, idTask));
                             errorMessage.setText("Successfully added complex task!");
-                         } else {
+                        } else {
                             errorMessage.setText("Please select which type of task you want to add !");
                             addButton.setVisible(true);
                         }
-
-                }catch (NumberFormatException ex){
+                    }catch (Exception ex){
+                        ex.printStackTrace();
+                        errorMessage.setText(ex.getMessage());
+                    }
+                    }catch (NumberFormatException ex){
                     ex.printStackTrace();
-                    errorMessage.setText("Hours field must be numbers! ");
+                    errorMessage.setText("Hour field and id must be numbers! ");
                 }
-                catch (RuntimeException ex){
+                    catch (RuntimeException ex){
                     ex.printStackTrace();
                     errorMessage.setText(ex.getMessage());
                 }
@@ -101,9 +97,9 @@ public class AddTaskPage extends JFrame {
         complexTaskButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                description.setVisible(true);
-                textField5.setVisible(true);
                 whichTaskIsWanted=2;
+                startHourField.setVisible(false);
+                endHourField.setVisible(false);
 
             }
         });
@@ -111,14 +107,19 @@ public class AddTaskPage extends JFrame {
         simpleTaskButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                textField5.setVisible(false);
-                description.setVisible(false);
                 whichTaskIsWanted=1;
+                startHourField.setVisible(true);
+                endHourField.setVisible(true);
             }
         });
 
+        addTaskToComplexButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new OperationsOnComplexTask();
+                dispose();
+            }
+        });
     }
 
-        */
-    }
 }

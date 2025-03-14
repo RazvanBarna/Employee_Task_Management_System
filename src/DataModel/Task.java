@@ -3,13 +3,12 @@ package DataModel;
 import java.io.Serializable;
 
 public abstract class Task implements Serializable {
-    private static int idStatic=1;
     private int idTask;
     private String statusTask;
     private String title;
 
-    public Task(String statusTask, String title) {
-        this.idTask=idStatic++;
+    public Task(String statusTask, String title, int idTask) {
+        this.idTask=idTask;
         this.statusTask = statusTask;
         this.title = title;
     }
@@ -22,10 +21,6 @@ public abstract class Task implements Serializable {
 
     public int getIdTask() {
         return idTask;
-    }
-
-    public static int getIdStatic() {
-        return idStatic;
     }
 
     public String getTitle() {
@@ -43,5 +38,12 @@ public abstract class Task implements Serializable {
                 idTask, title, statusTask);
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null ||!(obj instanceof Task)) return false;
+        Task task = (Task) obj;
+        return this.idTask == task.getIdTask() || this.getTitle().equals(task.getTitle());
+    }
 
 }

@@ -1,20 +1,18 @@
 package DataModel;
 
-import BusinessLogic.TasksManagement;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class ComplexTask extends Task{
     private List<Task> tasksOfaComplexTask = new ArrayList<>();
 
-    public ComplexTask(String statusTask, String title) {
-        super(statusTask, title);
+    public ComplexTask(String statusTask, String title,int idTask) {
+        super(statusTask, title,idTask);
     }
 
     public ComplexTask(){};
 
-    public List<Task> getTasksOfaComplexTask() {
+    public List<Task> getTasksOfComplexTask() {
         return tasksOfaComplexTask;
     }
 
@@ -27,7 +25,7 @@ public class ComplexTask extends Task{
     }
 
     public void deleteTask(Task task){
-        tasksOfaComplexTask.remove(task);
+        this.tasksOfaComplexTask.remove(task);
     }
 
     public Task findTask(Task task){

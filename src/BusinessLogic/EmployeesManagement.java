@@ -1,14 +1,15 @@
 package BusinessLogic;
 import DataAccess.SerializationOperations;
 import DataModel.Employee;
-import DataModel.Schedule;
+import DataModel.HourRetainer;
 import DataModel.Task;
 
+import java.io.File;
 import java.util.*;
 
 public class EmployeesManagement {
     TasksManagement tasksManagement ;
-    List<Schedule> listOfSchedulesForEmployees = new ArrayList<>();
+    List<HourRetainer> listOfSchedulesForEmployees = new ArrayList<>();
 
     public EmployeesManagement(TasksManagement tasksManagement){
         this.tasksManagement = tasksManagement;
@@ -16,7 +17,7 @@ public class EmployeesManagement {
 
     public EmployeesManagement(){};
 
-    private boolean checkIfEmployeeAlreadyExists(Employee employee){
+    public boolean checkIfEmployeeAlreadyExists(Employee employee){
         for(Map.Entry<Employee,List<Task>> entry : tasksManagement.getMapOfTasks().entrySet()){
             if(entry.getKey().equals(employee)) return true;
         }
@@ -28,10 +29,12 @@ public class EmployeesManagement {
             throw new RuntimeException("Employee is null");
         }
         else if (!checkIfEmployeeAlreadyExists(employee)){
-
+            File file = new File("src/DataAccess/mapFile.txt");
+            if(file.length() > 0 ){
+            tasksManagement.setMapOfTasks((Map<Employee, List<Task>>) SerializationOperations.readFile("src/DataAccess/mapFile.txt"));
+            }
             tasksManagement.getMapOfTasks().put(employee,new ArrayList<>());
             SerializationOperations.writeFile(tasksManagement.getMapOfTasks());
-           // tasksManagement.setMapOfTasks((Map<Employee, List<Task>>) SerializationOperations.readFile("src/DataAccess/mapFile.txt"));
         }
         else throw new RuntimeException("This employee already exists");
     }
@@ -56,15 +59,15 @@ public class EmployeesManagement {
         return totalOfHours;
     }
 
-    public List<Schedule> setSchedulesForEmployees() throws Exception{
+    public List<HourRetainer> setSchedulesForEmployees() throws Exception{
         Map <Employee,List<Task>> map = (Map<Employee, List<Task>>) SerializationOperations.readFile("src/DataAccess/mapFile.txt");
         for(Map.Entry<Employee,List<Task>> entry : tasksManagement.getMapOfTasks().entrySet()){
-            listOfSchedulesForEmployees.add(new Schedule(entry.getKey(),calculateEmployeeWorkDuration(entry.getKey().getIdEmployee())));
+            listOfSchedulesForEmployees.add(new HourRetainer(entry.getKey(),calculateEmployeeWorkDuration(entry.getKey().getIdEmployee())));
         }
         return listOfSchedulesForEmployees;
     }
 
-    public int calculateEmployeeWorkDuration(int idEmployee){
+    public int calculateEmployeeWorkDuration(int idEmployee) throws Exception{
         List<Task> tasksOfEmployer = tasksManagement.findListOfTasksFromMap(idEmployee);
         int totalOfHours = calculateNrOfHours(tasksOfEmployer);
         return totalOfHours;
