@@ -21,6 +21,8 @@ public class AddTaskPage extends JFrame {
     private JLabel errorMessage;
     private JTextField idTaskField;
     private JButton addTaskToComplexButton;
+    private JLabel endLabel;
+    private JLabel startLabel;
     private int whichTaskIsWanted = 0;
 
     public AddTaskPage() {
@@ -32,6 +34,8 @@ public class AddTaskPage extends JFrame {
         setVisible(true);
         startHourField.setVisible(true);
         endHourField.setVisible(true);
+        startLabel.setVisible(true);
+        endLabel.setVisible(true);
 
         backButton.addActionListener(new ActionListener() {
             @Override
@@ -51,7 +55,7 @@ public class AddTaskPage extends JFrame {
                     String fieldEndH = endHourField.getText();
                     String fieldId= idTaskField.getText();
 
-                    if( (fieldTitle.isEmpty() || fieldStaus.isEmpty() || fieldStartH.isEmpty() || fieldEndH.isEmpty()
+                    if( (fieldTitle.isEmpty() || fieldStaus.isEmpty() || fieldId.isEmpty()
                          ) && whichTaskIsWanted==2) {
                         throw new RuntimeException("All filed must be completed!");
                     }
@@ -62,12 +66,12 @@ public class AddTaskPage extends JFrame {
                     {
                         throw new RuntimeException("Task's status must be \"Completed\" or \"Uncompleted\" ");
                     }
-                    int startHour = Integer.parseInt(fieldStartH);
-                    int endHour = Integer.parseInt(fieldEndH);
                     int idTask = Integer.parseInt(fieldId);
 
                     try {
                         if (whichTaskIsWanted == 1) {
+                            int startHour = Integer.parseInt(fieldStartH);
+                            int endHour = Integer.parseInt(fieldEndH);
                             MainMenuPage.getTasksManagement().addTaskInApplication(new SimpleTask(fieldStaus, fieldTitle, startHour, endHour, idTask));
                             errorMessage.setText("Successfully added simple task!");
                         } else if (whichTaskIsWanted == 2) {
@@ -100,7 +104,8 @@ public class AddTaskPage extends JFrame {
                 whichTaskIsWanted=2;
                 startHourField.setVisible(false);
                 endHourField.setVisible(false);
-
+                startLabel.setVisible(false);
+                endLabel.setVisible(false);
             }
         });
 
@@ -110,6 +115,8 @@ public class AddTaskPage extends JFrame {
                 whichTaskIsWanted=1;
                 startHourField.setVisible(true);
                 endHourField.setVisible(true);
+                startLabel.setVisible(true);
+                endLabel.setVisible(true);
             }
         });
 

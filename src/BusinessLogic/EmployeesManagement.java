@@ -59,10 +59,13 @@ public class EmployeesManagement {
         return totalOfHours;
     }
 
-    public List<HourRetainer> setSchedulesForEmployees() throws Exception{
-        Map <Employee,List<Task>> map = (Map<Employee, List<Task>>) SerializationOperations.readFile("src/DataAccess/mapFile.txt");
+    public List<HourRetainer> setHourRetainerForEmployees() throws Exception{
+        tasksManagement.deserializeMap();
         for(Map.Entry<Employee,List<Task>> entry : tasksManagement.getMapOfTasks().entrySet()){
-            listOfSchedulesForEmployees.add(new HourRetainer(entry.getKey(),calculateEmployeeWorkDuration(entry.getKey().getIdEmployee())));
+            Employee employee = entry.getKey();
+            if(calculateEmployeeWorkDuration(employee.getIdEmployee()) >40) {
+                listOfSchedulesForEmployees.add(new HourRetainer(entry.getKey(), calculateEmployeeWorkDuration(entry.getKey().getIdEmployee())));
+            }
         }
         return listOfSchedulesForEmployees;
     }

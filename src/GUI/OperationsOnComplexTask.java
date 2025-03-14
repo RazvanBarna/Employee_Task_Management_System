@@ -43,6 +43,7 @@ public class OperationsOnComplexTask extends JFrame {
                     fillTasksToDelete(selectedComplexTask);
                     errorMessage.setText("Successfully added");
                 }catch (Exception ex){
+                    ex.printStackTrace();
                     errorMessage.setText(ex.getMessage());
                 }
             }
@@ -57,12 +58,12 @@ public class OperationsOnComplexTask extends JFrame {
                         throw new RuntimeException("Please select a task to delete");
                     }
                     MainMenuPage.getTasksManagement().deleteTaskInComplexTask(selectedComplexTask,(Task) deleteTask.getSelectedItem());
-                    MainMenuPage.refresh();
                     fillTasksToAdd();
                     fillComplexTasks();
                     fillTasksToDelete(selectedComplexTask);
                     errorMessage.setText("Successfully deleted");
                 }catch (Exception ex){
+                    ex.printStackTrace();
                     errorMessage.setText(ex.getMessage());
                 }
             }
@@ -88,6 +89,7 @@ public class OperationsOnComplexTask extends JFrame {
     private void fillTasksToAdd(){
         try {
             addTask.removeAllItems();
+            MainMenuPage.getTasksManagement().deserializeTaskList();
             List<Task> taskToAdd = MainMenuPage.getTasksManagement().getListOfTaskUnssigned();
             for (Task task : taskToAdd) {
                 if(task.equals(allComplexTasks.getSelectedItem())){

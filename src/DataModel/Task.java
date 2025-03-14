@@ -43,7 +43,7 @@ public abstract class Task implements Serializable {
         if (this == obj) return true;
         if (obj == null ||!(obj instanceof Task)) return false;
         Task task = (Task) obj;
-        return this.idTask == task.getIdTask() || this.getTitle().equals(task.getTitle());
+        return this.idTask == task.getIdTask();
     }
 
 }

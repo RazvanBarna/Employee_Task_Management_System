@@ -62,7 +62,7 @@ public class MainMenuPage extends JFrame {
         viewEmployeesButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //new ViewEmployeesPage(tasksManagement,employeesManagement,utility);
+                new ViewEmployeesPage();
                 dispose();
             }
         });
@@ -70,7 +70,7 @@ public class MainMenuPage extends JFrame {
         viewStatisticsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //new ViewStatisticsPage(tasksManagement,employeesManagement,utility);
+                new ViewStatisticsPage();
                 dispose();
             }
         });
@@ -88,14 +88,6 @@ public class MainMenuPage extends JFrame {
 
     public static TasksManagement getTasksManagement() {
         return tasksManagement;
-    }
-
-    public static void refresh() throws Exception{
-        getTasksManagement().serializeTaskList();
-        getTasksManagement().serializeMap();
-
-        getTasksManagement().deserializeTaskList();
-        getTasksManagement().deserializeMap();
     }
 
 }

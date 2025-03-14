@@ -1,8 +1,6 @@
 package GUI;
 
-import BusinessLogic.EmployeesManagement;
-import BusinessLogic.TasksManagement;
-import BusinessLogic.Utility;
+import DataModel.ComplexTask;
 import DataModel.Employee;
 import DataModel.Task;
 
@@ -10,6 +8,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -18,65 +17,102 @@ public class ViewEmployeesPage extends JFrame {
     private JPanel viewEmployeesPanel;
     private JTable table1;
     private JButton backButton;
-    private TasksManagement tasksManagement;
-    private EmployeesManagement employeesManagement;
-    private Utility utility;
+    private JComboBox<Employee> comboBox1;
+    private JButton button1;
+    private JLabel workDuration;
 
-    public ViewEmployeesPage(TasksManagement tasksManagement, EmployeesManagement employeesManagement, Utility utility) {
-        this.tasksManagement = tasksManagement;
-        this.employeesManagement = employeesManagement;
-        this.utility = utility;
 
+    public ViewEmployeesPage() {
         setContentPane(viewEmployeesPanel);
         setSize(700, 700);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
-        setTable();
-
+        fillComboboxWithEmployees();
+        Employee employee = (Employee) comboBox1.getSelectedItem();
 
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-               // new MainMenu(employeesManagement, tasksManagement, utility);
+                new MainMenuPage();
                 dispose();
+            }
+        });
+
+        comboBox1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Employee employee = (Employee) comboBox1.getSelectedItem();
+                setTable(employee.getIdEmployee());
+                workDuration.setText("");
+            }
+        });
+        button1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+               try {
+                   if(comboBox1.getSelectedItem() == null) throw new Exception("Select an employee !");
+                   Employee employee = (Employee) comboBox1.getSelectedItem();
+                   int time = MainMenuPage.getEmployeesManagement().calculateEmployeeWorkDuration(employee.getIdEmployee());
+                   workDuration.setText(String.valueOf(time) +"hours");
+               }catch (Exception ex){
+                   ex.printStackTrace();
+               }
             }
         });
     }
 
-    private String convertAllTaskInOneString(List<Task> tasks){
-        String allTasks="";
-        if(!tasks.isEmpty()) {
-            for (Task task : tasks) {
-                allTasks += task.toString() + " ; ";
-            }
-            allTasks = allTasks.substring(0,allTasks.length()-2);
-        }
-        else {
-            allTasks="No tasks";
-        }
-        return allTasks;
+    private void getDataForTable(int idEmployee,List<Task> tasks,ComplexTask complexTask) throws Exception {
+       for(Task task : complexTask.getTasksOfComplexTask()){
+           if(!tasks.contains(task)){
+               tasks.add(task);
+               if(task instanceof ComplexTask){
+                   getDataForTable(idEmployee, tasks, (ComplexTask) task);
+               }
+           }
+       }
     }
 
-    private Object[][] getDataForTable() {
-        Object[][] data = new Object[30][2];
-        int index =0;
-        for (Map.Entry<Employee, List<Task>> entry : tasksManagement.getMapOfTasks().entrySet()) {
-            Employee employee = entry.getKey();
-            List<Task> tasks = entry.getValue();
-            String taskConcatenate = convertAllTaskInOneString(tasks);
-            data[index][0]=employee;
-            data[index++][1]=taskConcatenate;
+    private Object[][] getData(int idEmployee) throws Exception{
+        List<Task> tasks = new ArrayList<>();
+        for(Task task : MainMenuPage.getTasksManagement().findListOfTasksFromMap(idEmployee)) {
+            if(!tasks.contains(task)){
+                tasks.add(task);
+                if(task instanceof ComplexTask){
+                    getDataForTable(idEmployee,tasks,(ComplexTask) task);
+                }
+            }
         }
+        Object [][] data = new Object[tasks.size()][1];
+
+        for (int i = 0; i < tasks.size(); i++) {
+            data[i][0] = tasks.get(i);
+        }
+
         return data;
     }
 
-    private void setTable() {
-        DefaultTableModel model = new DefaultTableModel(
-                getDataForTable(),
-                new String[]{"Employee", "Tasks"}
-        );
-        table1.setModel(model);
+    private void setTable(int idEmployee) {
+        try {
+            DefaultTableModel model = new DefaultTableModel(
+                    getData(idEmployee),
+                    new String[]{"Tasks"}
+            );
+            table1.setModel(model);
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+    }
+
+    private void fillComboboxWithEmployees(){
+        try {
+            comboBox1.removeAllItems();
+            for (Employee employee : MainMenuPage.getTasksManagement().getListOfEmployeesFromMap()) {
+                comboBox1.addItem(employee);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }
 

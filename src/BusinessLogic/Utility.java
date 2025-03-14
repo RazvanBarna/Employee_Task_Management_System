@@ -8,21 +8,18 @@ import java.util.*;
 
 public class Utility {
 
-    public static List<HourRetainer> sortByNrOfHoursGt40 (List<HourRetainer> schedules){
-        Collections.sort(schedules, new Comparator<HourRetainer>(){
+    public static void sortByNrOfHoursGt40 (List<HourRetainer> hourRetainerList){
+        Collections.sort(hourRetainerList, new Comparator<HourRetainer>(){
             public int compare(HourRetainer s1, HourRetainer s2) {
                 if (s1.getNrOfHoursWork() > s2.getNrOfHoursWork()) return 1;
                 if (s1.getNrOfHoursWork() < s2.getNrOfHoursWork()) return -1;
                 return 0;
             }
         });
-        for ( HourRetainer schedule : schedules){
-            System.out.println(schedule.toString());
-        }
-        return schedules;
     }
 
     public static Map<String,Map<String,Integer>> calculateStatusOfTaskPerEmployee(Map<Employee,List<Task>> map){
+
         List<Employee> employees = listOfEmployeesInMap(map);
         Map<String , Map<String, Integer>> mapForStatus = initMap(employees);
         for(Map.Entry<String , Map<String, Integer>> entry: mapForStatus.entrySet()){

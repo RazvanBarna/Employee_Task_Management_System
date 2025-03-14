@@ -77,20 +77,17 @@ public class TasksManagement {
         }
         else {
                 this.deserializeTaskList();
-                this.listOfTaskUnssigned.remove(task);
-                for(ComplexTask complexTask1 : this.fillAllComplexTaskFromMapAndUnassigned()){
-                    if(complexTask1.equals(complexTask)){
-                        complexTask1.getTasksOfComplexTask().add(task);
+                for(Task task1 : listOfTaskUnssigned){
+                    if(task1 instanceof ComplexTask && task1.equals(complexTask)){
+                        if(!hasAlreadyTheTask(((ComplexTask) task1).getTasksOfComplexTask(),task))
+                            ((ComplexTask) task1).getTasksOfComplexTask().add(task);
                     }
+                    listOfTaskUnssigned.remove(task);
+                    break;
                 }
-
 
                 this.serializeTaskList();
             }
-            if(errorMessageTaskk !=null) {
-                throw new Exception(errorMessageTaskk);
-            }
-            this.deserializeTaskList();
         }
 
     public void deleteTaskInComplexTask(ComplexTask complexTask, Task task) throws Exception{
@@ -108,13 +105,6 @@ public class TasksManagement {
 
         this.listOfTaskUnssigned.add(task);
         this.serializeTaskList();
-
-        if(errorMessageTaskk !=null)
-            throw new Exception(errorMessageTaskk);
-
-        this.deserializeMap();
-        this.deserializeTaskList();
-
     }
 
     public List<Employee> getListOfEmployeesFromMap() throws Exception{
@@ -196,9 +186,9 @@ public class TasksManagement {
 
         int a=0;
         for(ComplexTask complexTask :complexTasks){
-            System.out.println(a++);
-            System.out.println(complexTask);
-            System.out.println("Inainte de for 1");
+           // System.out.println(a++);
+          //  System.out.println(complexTask);
+            //System.out.println("Inainte de for 1");
             for(Task task : complexTask.getTasksOfComplexTask()){
             //    System.out.println(task);
             }
@@ -207,12 +197,14 @@ public class TasksManagement {
         return complexTasks;
     }
 
-    private void allComplexTasksRecursively(ComplexTask complexTaskFromList,List<ComplexTask> complexTasks) {
-        complexTasks.add(complexTaskFromList);
-        for (Task task : complexTaskFromList.getTasksOfComplexTask())
-            if (task instanceof ComplexTask)
-                if (!task.equals(complexTaskFromList))
+    private void allComplexTasksRecursively(ComplexTask complexTaskFromList, List<ComplexTask> complexTasks) {
+        if (!complexTasks.contains(complexTaskFromList)) {
+            complexTasks.add(complexTaskFromList);
+            for (Task task : complexTaskFromList.getTasksOfComplexTask())
+                if (task instanceof ComplexTask)
                     allComplexTasksRecursively((ComplexTask) task, complexTasks);
+        }
+
     }
 
 }
