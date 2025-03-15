@@ -1,16 +1,16 @@
 package BusinessLogic;
 
 import DataModel.Employee;
-import DataModel.HourRetainer;
+import DataModel.EmployeeHourRetainer;
 import DataModel.Task;
 
 import java.util.*;
 
 public class Utility {
 
-    public static void sortByNrOfHoursGt40 (List<HourRetainer> hourRetainerList){
-        Collections.sort(hourRetainerList, new Comparator<HourRetainer>(){
-            public int compare(HourRetainer s1, HourRetainer s2) {
+    public static void sortByNrOfHoursGt40 (List<EmployeeHourRetainer> allHourReatinerList ){
+        Collections.sort(allHourReatinerList , new Comparator<EmployeeHourRetainer>(){
+            public int compare(EmployeeHourRetainer s1, EmployeeHourRetainer s2) {
                 if (s1.getNrOfHoursWork() > s2.getNrOfHoursWork()) return 1;
                 if (s1.getNrOfHoursWork() < s2.getNrOfHoursWork()) return -1;
                 return 0;

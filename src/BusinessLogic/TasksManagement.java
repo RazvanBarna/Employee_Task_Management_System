@@ -9,7 +9,7 @@ import java.util.*;
 
 public class TasksManagement {
     private Map<Employee,List<Task>> mapOfTasks = new HashMap<>();
-    private String errorMessageTaskk="";
+    private String errorMessageTask ="";
     private List<Task> listOfTaskUnssigned= new ArrayList<>();
 
     public Map<Employee, List<Task>> getMapOfTasks() {
@@ -45,18 +45,10 @@ public class TasksManagement {
         return listOfTaskUnssigned;
     }
 
-    public void setMapOfTasks(Map<Employee, List<Task>> mapOfTasks) {
-        this.mapOfTasks = mapOfTasks;
-    }
-
-    public String getErrorMessageTaskk() {
-        return errorMessageTaskk;
-    }
-
     public void addTaskInApplication(Task task) throws Exception{
         if(task==null){
-            errorMessageTaskk ="The task must have an input.";
-            throw new Exception(errorMessageTaskk);
+            errorMessageTask ="The task must have an input.";
+            throw new Exception(errorMessageTask);
         }
         else {
             this.deserializeTaskList();
@@ -65,46 +57,42 @@ public class TasksManagement {
                 this.serializeTaskList();
             }
             else {
-                errorMessageTaskk = " This task already exists";
-                throw new Exception(errorMessageTaskk);
+                errorMessageTask = " This task already exists";
+                throw new Exception(errorMessageTask);
             }
         }
     }
 
-    public void addTaskInComplexTask(ComplexTask complexTask, Task task) throws Exception{
-        if(task==null){
-            errorMessageTaskk ="The task must have an input.";
-        }
-        else {
-                this.deserializeTaskList();
-                for(Task task1 : listOfTaskUnssigned){
-                    if(task1 instanceof ComplexTask && task1.equals(complexTask)){
-                        if(!hasAlreadyTheTask(((ComplexTask) task1).getTasksOfComplexTask(),task))
-                            ((ComplexTask) task1).getTasksOfComplexTask().add(task);
-                    }
-                    listOfTaskUnssigned.remove(task);
-                    break;
-                }
+    public void addTaskInComplexTask(ComplexTask complexTask, Task task) throws Exception {
+        if (task == null) {
+            errorMessageTask = "The task must have an input.";
+        } else {
+            List<ComplexTask> complexTasks = this.fillAllComplexTaskFromMapAndUnassigned();
+            for(ComplexTask complexTask1 : complexTasks)
+                if(complexTask1.equals(complexTask))
+                    complexTask1.getTasksOfComplexTask().add(task);
 
-                this.serializeTaskList();
-            }
+            this.listOfTaskUnssigned.remove(task);
+            this.serializeMap();
+            this.serializeTaskList();
         }
+    }
 
     public void deleteTaskInComplexTask(ComplexTask complexTask, Task task) throws Exception{
         if(task==null){
-            errorMessageTaskk ="The task must have an input.";
+            errorMessageTask ="The task must have an input.";
             return;
         }
         List<ComplexTask> listOfComplexTasks = this.fillAllComplexTaskFromMapAndUnassigned();
 
-        for(Task task1 : listOfComplexTasks)
-            if(task1 instanceof ComplexTask)
-                if(task1.equals(complexTask))
-                  ((ComplexTask) task1).getTasksOfComplexTask().remove(task);
+        for(ComplexTask complexTask1 : listOfComplexTasks)
+                if(complexTask1.equals(complexTask))
+                    complexTask1.getTasksOfComplexTask().remove(task);
 
 
         this.listOfTaskUnssigned.add(task);
         this.serializeTaskList();
+        this.serializeMap();
     }
 
     public List<Employee> getListOfEmployeesFromMap() throws Exception{
@@ -116,8 +104,8 @@ public class TasksManagement {
         return employees;
     }
 
-    private boolean hasAlreadyTheTask(List<Task> tasksOfEmployer,Task task){
-        for ( Task taskIndex : tasksOfEmployer ) {
+    private boolean hasAlreadyTheTask(List<Task> tasksOfEmployee, Task task){
+        for ( Task taskIndex : tasksOfEmployee) {
             if (taskIndex.equals(task)) {
                 return true;
             }
@@ -142,7 +130,7 @@ public class TasksManagement {
     public void assignTaskToEmployee(int idEmployee,Task currentTask) throws Exception{
         List<Task> tasksOfEmployer = findListOfTasksFromMap(idEmployee);
         if(tasksOfEmployer == null)
-            errorMessageTaskk = "The employee with this id does not exist !";
+            errorMessageTask = "The employee with this id does not exist !";
         else {
             tasksOfEmployer.add(currentTask);
             listOfTaskUnssigned.remove(currentTask);
@@ -183,16 +171,6 @@ public class TasksManagement {
             for (Task task : entry.getValue())
                 if (task instanceof ComplexTask && !complexTasks.contains(task))
                     allComplexTasksRecursively((ComplexTask) task,complexTasks);
-
-        int a=0;
-        for(ComplexTask complexTask :complexTasks){
-           // System.out.println(a++);
-          //  System.out.println(complexTask);
-            //System.out.println("Inainte de for 1");
-            for(Task task : complexTask.getTasksOfComplexTask()){
-            //    System.out.println(task);
-            }
-        }
 
         return complexTasks;
     }

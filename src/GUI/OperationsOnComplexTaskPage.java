@@ -8,7 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
-public class OperationsOnComplexTask extends JFrame {
+public class OperationsOnComplexTaskPage extends JFrame {
     private JPanel complexTaskPanel;
     private JLabel errorMessage;
     private JComboBox<ComplexTask> allComplexTasks;
@@ -18,7 +18,7 @@ public class OperationsOnComplexTask extends JFrame {
     private JButton deleteTaskButton;
     private JButton backButton;
 
-    public OperationsOnComplexTask(){
+    public OperationsOnComplexTaskPage(){
         setContentPane(complexTaskPanel);
         setSize(500,500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -94,6 +94,11 @@ public class OperationsOnComplexTask extends JFrame {
             for (Task task : taskToAdd) {
                 if(task.equals(allComplexTasks.getSelectedItem())){
                     continue;
+                }
+                if(task instanceof ComplexTask){
+                    if (((ComplexTask) task).getTasksOfComplexTask().contains(allComplexTasks.getSelectedItem())){
+                        continue;
+                    }
                 }
 
                 this.addTask.addItem(task);

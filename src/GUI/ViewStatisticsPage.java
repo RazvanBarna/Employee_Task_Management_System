@@ -1,10 +1,8 @@
 package GUI;
 
-import BusinessLogic.EmployeesManagement;
 import BusinessLogic.Utility;
 import DataModel.Employee;
-import DataModel.HourRetainer;
-import com.sun.tools.javac.Main;
+import DataModel.EmployeeHourRetainer;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -80,12 +78,12 @@ public class ViewStatisticsPage extends JFrame {
 
     private Object[][] updateTableForSort(){
         Object[][] data = new Object[100][2];
-        List<HourRetainer> duplicates = new ArrayList<>();
+        List<EmployeeHourRetainer> duplicates = new ArrayList<>();
         try {
-            List<HourRetainer> hourRetainerForEmployee = MainMenuPage.getEmployeesManagement().setHourRetainerForEmployees();
+            List<EmployeeHourRetainer> hourRetainerForEmployee = MainMenuPage.getEmployeesManagement().setHourRetainerForEmployee();
             Utility.sortByNrOfHoursGt40(hourRetainerForEmployee);
             int index = 0;
-            for (HourRetainer hourRetainer : hourRetainerForEmployee) {
+            for (EmployeeHourRetainer hourRetainer : hourRetainerForEmployee) {
                     if(!duplicates.contains(hourRetainer)){
                         duplicates.add(hourRetainer);
                         data[index][0] = hourRetainer.getEmployee().getName();

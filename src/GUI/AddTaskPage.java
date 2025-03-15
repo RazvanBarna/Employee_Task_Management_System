@@ -123,7 +123,7 @@ public class AddTaskPage extends JFrame {
         addTaskToComplexButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new OperationsOnComplexTask();
+                new OperationsOnComplexTaskPage();
                 dispose();
             }
         });

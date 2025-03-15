@@ -1,12 +1,10 @@
 package DataModel;
 
-import java.util.Objects;
-
-public class HourRetainer {
+public class EmployeeHourRetainer {
     private Employee employee;
     private  int nrOfHoursWork;
 
-    public HourRetainer(Employee employee, int nrOfHoursWork){
+    public EmployeeHourRetainer(Employee employee, int nrOfHoursWork){
         this.employee = employee;
         this.nrOfHoursWork = nrOfHoursWork;
     }
@@ -35,7 +33,7 @@ public class HourRetainer {
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
-        HourRetainer that = (HourRetainer) obj;
+        EmployeeHourRetainer that = (EmployeeHourRetainer) obj;
         return nrOfHoursWork == that.nrOfHoursWork && employee.equals(this.getEmployee());
     }
 
