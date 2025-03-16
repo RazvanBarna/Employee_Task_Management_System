@@ -6,8 +6,8 @@ import java.util.List;
 public class ComplexTask extends Task{
     private List<Task> tasksOfaComplexTask = new ArrayList<>();
 
-    public ComplexTask(String statusTask, String title,int idTask) {
-        super(statusTask, title,idTask);
+    public ComplexTask(String statusTask, String title) throws Exception{
+        super(statusTask, title);
     }
 
     public ComplexTask(){};
@@ -53,7 +53,7 @@ public class ComplexTask extends Task{
     }
 
     public String toString(){
-        return String.format("%s", super.toString());
+        return String.format("%s | Estimated Duration: %d", super.toString(), estimateDuration());
     }
 
 }

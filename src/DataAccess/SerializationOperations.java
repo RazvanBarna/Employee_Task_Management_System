@@ -26,6 +26,7 @@ public class SerializationOperations {
         } else if (objectSerialized instanceof List<?>) {
             initWriteFile("src/DataAccess/taskFile.txt", objectSerialized);
         }
+        else initWriteFile("src/DataAccess/idTask.txt",objectSerialized);
     }
 
     private static Object initRead(String file) throws Exception{
@@ -42,9 +43,11 @@ public class SerializationOperations {
         {
             return (List<Task>) objectRead;
         }
-        else {
+        else if (file.equals("src/DataAccess/mapFile.txt")){
             return (Map<Employee,List<Task>>)objectRead;
         }
+        else return (Integer) objectRead;
     }
+
 
 }

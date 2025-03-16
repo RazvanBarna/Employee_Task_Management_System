@@ -1,93 +1,35 @@
-# PT2025_30222_Barna_Razvan_1
+# PT2025_30222_Barna_Razvan_1 - Project 1
+
+## About Data Model
+- In this section, I used inheritance to implement the SimpleTask and ComplexTask classes, as required. Additionally, I implemented serialization to retain the task id as a static attribute. Whenever a new task is created, the id is updated automatically to ensure uniqueness.
+- The Employee class is implemented according to the requirements, with overridden hashCode and equals methods.
+- To improve employee management, I created an additional class, EmployeeHourRetainer, which tracks the number of hours worked by each employee. The EmployeesManagement class maintains a list of EmployeeHourRetainer instances, which can be sorted using utility methods.
+
+## About Serialization 
+* Serialization is managed through two main methods: read and write. Depending on the input, the program determines the appropriate file for reading or writing data.
+
+## About Graphic User Interface
+ The application consists of eight pages/classes, all implemented using Java Swing.The application starts with the Main Menu, where the Project Manager has multiple options:
+* Add Employees & Tasks – The manager can add new employees and tasks.
+* Manage Complex Tasks – Tasks can be added or removed from a Complex Task, allowing for more structured workflows.
+* Assign Tasks to Employees – Tasks can be assigned to employees.
+* Update Task Status – Once a task is completed, the manager can change its status to "Completed". If issues arise, the status can be reverted to "Uncompleted". For Complex Tasks, only the main task (which contains the sub-tasks) can have its status updated.
+* View Employee Data – The manager can check all employees and calculate their total completed work.
+* Employee Statistics Page – Provides insights into the number of completed and uncompleted tasks per employee.
 
 
+## About Business Logic
+The business logic of the program is ensured by three key classes, each responsible for different aspects of functionality:
+- **Utility** : This class implements two static methods: :
+  - sortByNrOfHoursGt40 – Generates an ascending list of employees who have worked more than 40 hours, helping the project manager monitor workload distribution.
+  - calculateStatusOfTaskPerEmployee – Calculates the number of tasks per status (Completed or Uncompleted) for each employee.
+- **EmployeesManagement** : This class handles employee-related operations and includes three main methods:
+  - addEmployee – Links the business logic with the GUI, allowing the addition of new employees.
+  - createHourRetainerList – Manages the list of hour retainers, ensuring accurate tracking of worked hours.
+  - calculateCompletedHours – Calculates the total number of hours an employee has worked on completed tasks.
+- **TaskManagement** : This class contains various methods essential for task management, including:
+    - addTask – Connects task management with the GUI, enabling the creation of new tasks.
+    - addTaskInComplexTask() & deleteTaskInComplexTask() – Manage the structure of Complex Tasks, allowing tasks to be added or removed dynamically.
+    - modifyStatusTask() & assignTask() – Facilitate task status updates and task assignment through the GUI.
+    - allTaskUnassigned  – A crucial attribute that stores all unassigned tasks. Whenever the project manager creates a new task, it is first placed in this list before being assigned to an employee.
 
-## Getting started
-
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
-
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
-
-## Add your files
-
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
-
-```
-cd existing_repo
-git remote add origin https://gitlab.com/pt2025_30222_barna_razvan/pt2025_30222_barna_razvan_1.git
-git branch -M main
-git push -uf origin main
-```
-
-## Integrate with your tools
-
-- [ ] [Set up project integrations](https://gitlab.com/pt2025_30222_barna_razvan/pt2025_30222_barna_razvan_1/-/settings/integrations)
-
-## Collaborate with your team
-
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
-
-## Test and Deploy
-
-Use the built-in continuous integration in GitLab.
-
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
-
-***
-
-# Editing this README
-
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.

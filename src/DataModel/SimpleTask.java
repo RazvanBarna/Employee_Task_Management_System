@@ -4,8 +4,8 @@ public class SimpleTask extends Task{
     private int startHour;
     private int endHour;
 
-    public SimpleTask(String statusTask, String title, int startHour, int endHour,int idTask) {
-        super(statusTask, title,idTask);
+    public SimpleTask(String statusTask, String title, int startHour, int endHour) throws Exception {
+        super(statusTask, title);
         this.endHour = endHour;
         this.startHour = startHour;
     }

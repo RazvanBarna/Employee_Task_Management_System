@@ -66,16 +66,17 @@ public class TasksManagement {
     public void addTaskInComplexTask(ComplexTask complexTask, Task task) throws Exception {
         if (task == null) {
             errorMessageTask = "The task must have an input.";
-        } else {
-            List<ComplexTask> complexTasks = this.fillAllComplexTaskFromMapAndUnassigned();
-            for(ComplexTask complexTask1 : complexTasks)
-                if(complexTask1.equals(complexTask))
-                    complexTask1.getTasksOfComplexTask().add(task);
-
-            this.listOfTaskUnssigned.remove(task);
-            this.serializeMap();
-            this.serializeTaskList();
+            return;
         }
+        List<ComplexTask> complexTasks = this.fillAllComplexTaskFromMapAndUnassigned();
+        for(ComplexTask complexTask1 : complexTasks)
+            if(complexTask1.equals(complexTask))
+                complexTask1.getTasksOfComplexTask().add(task);
+
+        this.listOfTaskUnssigned.remove(task);
+        this.serializeMap();
+        this.serializeTaskList();
+
     }
 
     public void deleteTaskInComplexTask(ComplexTask complexTask, Task task) throws Exception{

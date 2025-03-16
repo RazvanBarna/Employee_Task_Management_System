@@ -85,8 +85,9 @@ public class ViewEmployeesPage extends JFrame {
         }
         Object [][] data = new Object[tasks.size()][1];
 
-        for (int i = 0; i < tasks.size(); i++) {
-            data[i][0] = tasks.get(i);
+        int index=0;
+        for(Task task: tasks){
+            data[index++][0] = task;
         }
 
         return data;

@@ -9,7 +9,6 @@ import java.awt.event.ActionListener;
 
 public class AddTaskPage extends JFrame {
     private JPanel addTaskPanel;
-    private JLabel fieldTitle;
     private JTextField titleField;
     private JTextField statusField;
     private JTextField startHourField;
@@ -19,10 +18,10 @@ public class AddTaskPage extends JFrame {
     private JButton complexTaskButton;
     private JButton simpleTaskButton;
     private JLabel errorMessage;
-    private JTextField idTaskField;
     private JButton addTaskToComplexButton;
     private JLabel endLabel;
     private JLabel startLabel;
+    private JLabel fieldTitle;
     private int whichTaskIsWanted = 0;
 
     public AddTaskPage() {
@@ -53,10 +52,8 @@ public class AddTaskPage extends JFrame {
                     String fieldStaus = statusField.getText();
                     String fieldStartH = startHourField.getText();
                     String fieldEndH = endHourField.getText();
-                    String fieldId= idTaskField.getText();
 
-                    if( (fieldTitle.isEmpty() || fieldStaus.isEmpty() || fieldId.isEmpty()
-                         ) && whichTaskIsWanted==2) {
+                    if( (fieldTitle.isEmpty() || fieldStaus.isEmpty()) && whichTaskIsWanted==2) {
                         throw new RuntimeException("All filed must be completed!");
                     }
                     else if ( (fieldTitle.isEmpty() || fieldStaus.isEmpty() || fieldStartH.isEmpty() || fieldEndH.isEmpty() ) && whichTaskIsWanted==1) {
@@ -66,16 +63,17 @@ public class AddTaskPage extends JFrame {
                     {
                         throw new RuntimeException("Task's status must be \"Completed\" or \"Uncompleted\" ");
                     }
-                    int idTask = Integer.parseInt(fieldId);
 
                     try {
                         if (whichTaskIsWanted == 1) {
                             int startHour = Integer.parseInt(fieldStartH);
                             int endHour = Integer.parseInt(fieldEndH);
-                            MainMenuPage.getTasksManagement().addTaskInApplication(new SimpleTask(fieldStaus, fieldTitle, startHour, endHour, idTask));
+                            if(startHour < 0 || startHour >23 || endHour < 0 || endHour >23)
+                                throw new Exception("Please enter a valid hour!");
+                            MainMenuPage.getTasksManagement().addTaskInApplication(new SimpleTask(fieldStaus, fieldTitle, startHour, endHour));
                             errorMessage.setText("Successfully added simple task!");
                         } else if (whichTaskIsWanted == 2) {
-                            MainMenuPage.getTasksManagement().addTaskInApplication(new ComplexTask(fieldStaus, fieldTitle, idTask));
+                            MainMenuPage.getTasksManagement().addTaskInApplication(new ComplexTask(fieldStaus, fieldTitle));
                             errorMessage.setText("Successfully added complex task!");
                         } else {
                             errorMessage.setText("Please select which type of task you want to add !");
