@@ -90,5 +90,10 @@ public class MainMenuPage extends JFrame {
         return tasksManagement;
     }
 
+    public static void main(String[] args) {
+        new MainMenuPage();
+
+    }
 }
+
 

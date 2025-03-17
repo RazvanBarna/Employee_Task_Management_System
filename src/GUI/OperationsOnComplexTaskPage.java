@@ -20,7 +20,7 @@ public class OperationsOnComplexTaskPage extends JFrame {
 
     public OperationsOnComplexTaskPage(){
         setContentPane(complexTaskPanel);
-        setSize(500,500);
+        setSize(700,700);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);

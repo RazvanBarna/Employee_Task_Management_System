@@ -28,8 +28,8 @@ The business logic of the program is ensured by three key classes, each responsi
   - createHourRetainerList – Manages the list of hour retainers, ensuring accurate tracking of worked hours.
   - calculateCompletedHours – Calculates the total number of hours an employee has worked on completed tasks.
 - **TaskManagement** : This class contains various methods essential for task management, including:
-    - addTask – Connects task management with the GUI, enabling the creation of new tasks.
-    - addTaskInComplexTask() & deleteTaskInComplexTask() – Manage the structure of Complex Tasks, allowing tasks to be added or removed dynamically.
-    - modifyStatusTask() & assignTask() – Facilitate task status updates and task assignment through the GUI.
+    - addTaskInApplication – Connects task management with the GUI, enabling the creation of new tasks.
+    - addTaskInComplexTask & deleteTaskInComplexTask – Manage the structure of Complex Tasks, allowing tasks to be added or removed dynamically.
+    - modifyStatusTask & assignTask – Facilitate task status updates and task assignment through the GUI.
     - allTaskUnassigned  – A crucial attribute that stores all unassigned tasks. Whenever the project manager creates a new task, it is first placed in this list before being assigned to an employee.
 

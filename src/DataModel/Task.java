@@ -1,22 +1,14 @@
 package DataModel;
 
-import DataAccess.SerializationOperations;
-
-import java.io.File;
 import java.io.Serializable;
 
 public abstract class Task implements Serializable {
     private int idTask;
-    private static Integer idAutoIncrement =1;
     private String statusTask;
     private String title;
 
-    public Task(String statusTask, String title) throws Exception {
-        if(new File("src/DataAccess/idTask.txt").length() >0) {
-            idAutoIncrement = (Integer) SerializationOperations.readFile("src/DataAccess/idTask.txt");
-        }
-        this.idTask=idAutoIncrement++;
-        SerializationOperations.writeFile(idAutoIncrement);
+    public Task(String statusTask, String title,int idTask)  {
+        this.idTask=idTask;
         this.statusTask = statusTask;
         this.title = title;
     }
@@ -51,7 +43,7 @@ public abstract class Task implements Serializable {
         if (this == obj) return true;
         if (obj == null ||!(obj instanceof Task)) return false;
         Task task = (Task) obj;
-        return this.idTask == task.getIdTask();
+        return this.idTask == task.getIdTask() || this.getTitle().equals(task.getTitle());
     }
 
 }

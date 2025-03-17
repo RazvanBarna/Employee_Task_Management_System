@@ -1,5 +1,4 @@
 package BusinessLogic;
-
 import DataModel.Employee;
 import DataModel.EmployeeHourRetainer;
 import DataModel.Task;
@@ -34,29 +33,26 @@ public class Utility {
 
     private static Map<String , Map<String, Integer>> initMap(List<Employee> employees){
         HashMap<String , Map<String, Integer>> map= new HashMap<String , Map<String, Integer>>();
-        for(Employee employee : employees){
+        for(Employee employee : employees)
             map.put(employee.getName(),new HashMap<>());
 
-        }
         return map;
     }
 
     private static List<Task> getListOfTaskWithEmployeessName(String employeeName, Map<Employee,List<Task>> map){
-        for(Map.Entry<Employee,List<Task>> entry: map.entrySet() ){
-            if(entry.getKey().getName().equals(employeeName)){
+        for(Map.Entry<Employee,List<Task>> entry: map.entrySet())
+            if(entry.getKey().getName().equals(employeeName))
                 return entry.getValue();
-            }
-        }
+
         return null;
     }
 
     private static int nrOfStatusTasks(List<Task> tasks, String status){
         int totalNumber=0;
-        for(Task task : tasks){
-            if(task.getStatusTask().equals(status)){
+        for(Task task : tasks)
+            if(task.getStatusTask().equals(status))
                 totalNumber++;
-            }
-        }
+
         return totalNumber;
     }
 
@@ -69,11 +65,10 @@ public class Utility {
 
     private static List<Employee> listOfEmployeesInMap(Map<Employee, List<Task>> map){
         List<Employee> employees =new ArrayList<>();
-        for(Map.Entry<Employee,List<Task>> entry : map.entrySet()){
-            if(entry.getKey()!=null){
+        for(Map.Entry<Employee,List<Task>> entry : map.entrySet())
+            if(entry.getKey()!=null)
                 employees.add(entry.getKey());
-            }
-        }
+
         return employees;
     }
 

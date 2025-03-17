@@ -49,6 +49,7 @@ public class AddEmployeePage extends JFrame {
                     else {
                         try {
                             int ageOfEmployee = Integer.parseInt(fieldInfornation2Age);
+                            if(ageOfEmployee < 0 ) throw new Exception("Please insert a valid age !");
                             int id =Integer.parseInt(textFieldId.getText());
                             Employee employee = new Employee(fieldInformation1Name, ageOfEmployee,id);
                             MainMenuPage.getEmployeesManagement().addEmployee(employee);

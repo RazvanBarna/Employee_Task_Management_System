@@ -1,7 +1,9 @@
 package GUI;
 
+import BusinessLogic.TasksManagement;
 import DataModel.ComplexTask;
 import DataModel.SimpleTask;
+import com.sun.tools.javac.Main;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -65,15 +67,18 @@ public class AddTaskPage extends JFrame {
                     }
 
                     try {
+                        MainMenuPage.getTasksManagement().deserializeId();
                         if (whichTaskIsWanted == 1) {
                             int startHour = Integer.parseInt(fieldStartH);
                             int endHour = Integer.parseInt(fieldEndH);
                             if(startHour < 0 || startHour >23 || endHour < 0 || endHour >23)
                                 throw new Exception("Please enter a valid hour!");
-                            MainMenuPage.getTasksManagement().addTaskInApplication(new SimpleTask(fieldStaus, fieldTitle, startHour, endHour));
+                            MainMenuPage.getTasksManagement().addTaskInApplication(new SimpleTask(fieldStaus, fieldTitle, startHour, endHour, TasksManagement.getIdAutoIncrement()));
+                            MainMenuPage.getTasksManagement().serializeId();
                             errorMessage.setText("Successfully added simple task!");
                         } else if (whichTaskIsWanted == 2) {
-                            MainMenuPage.getTasksManagement().addTaskInApplication(new ComplexTask(fieldStaus, fieldTitle));
+                            MainMenuPage.getTasksManagement().addTaskInApplication(new ComplexTask(fieldStaus, fieldTitle,TasksManagement.getIdAutoIncrement()));
+                            MainMenuPage.getTasksManagement().serializeId();
                             errorMessage.setText("Successfully added complex task!");
                         } else {
                             errorMessage.setText("Please select which type of task you want to add !");

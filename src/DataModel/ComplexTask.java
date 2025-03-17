@@ -6,8 +6,8 @@ import java.util.List;
 public class ComplexTask extends Task{
     private List<Task> tasksOfaComplexTask = new ArrayList<>();
 
-    public ComplexTask(String statusTask, String title) throws Exception{
-        super(statusTask, title);
+    public ComplexTask(String statusTask, String title, int  idTask) {
+        super(statusTask, title,idTask);
     }
 
     public ComplexTask(){};

@@ -10,6 +10,7 @@ import java.util.*;
 public class TasksManagement {
     private Map<Employee,List<Task>> mapOfTasks = new HashMap<>();
     private String errorMessageTask ="";
+    private static Integer idAutoIncrement =1;
     private List<Task> listOfTaskUnssigned= new ArrayList<>();
 
     public Map<Employee, List<Task>> getMapOfTasks() {
@@ -40,12 +41,26 @@ public class TasksManagement {
         else this.mapOfTasks = new HashMap<>();
     }
 
+    public void deserializeId() throws Exception{
+        if(new File("src/DataAccess/idTask.txt").length() >0) {
+            idAutoIncrement = (Integer) SerializationOperations.readFile("src/DataAccess/idTask.txt");
+            idAutoIncrement++;
+        }
+        else idAutoIncrement=1;
+    }
+
+    public void serializeId() throws Exception{
+        SerializationOperations.writeFile(idAutoIncrement);
+    }
+
 
     public List<Task> getListOfTaskUnssigned() {
         return listOfTaskUnssigned;
     }
 
     public void addTaskInApplication(Task task) throws Exception{
+        this.deserializeId();
+
         if(task==null){
             errorMessageTask ="The task must have an input.";
             throw new Exception(errorMessageTask);
@@ -63,35 +78,35 @@ public class TasksManagement {
         }
     }
 
-    public void addTaskInComplexTask(ComplexTask complexTask, Task task) throws Exception {
-        if (task == null) {
-            errorMessageTask = "The task must have an input.";
+    public void addTaskInComplexTask(ComplexTask complexTask, Task taskToAdd) throws Exception {
+        if (taskToAdd == null) {
+            errorMessageTask = "The taskToAdd must have an input.";
             return;
         }
         List<ComplexTask> complexTasks = this.fillAllComplexTaskFromMapAndUnassigned();
-        for(ComplexTask complexTask1 : complexTasks)
-            if(complexTask1.equals(complexTask))
-                complexTask1.getTasksOfComplexTask().add(task);
+        for(ComplexTask complexFromList : complexTasks)
+            if(complexFromList.equals(complexTask))
+                complexFromList.addTask(taskToAdd);
 
-        this.listOfTaskUnssigned.remove(task);
+        this.listOfTaskUnssigned.remove(taskToAdd);
         this.serializeMap();
         this.serializeTaskList();
 
     }
 
-    public void deleteTaskInComplexTask(ComplexTask complexTask, Task task) throws Exception{
-        if(task==null){
-            errorMessageTask ="The task must have an input.";
+    public void deleteTaskInComplexTask(ComplexTask complexTask, Task taskToDelete) throws Exception{
+        if(taskToDelete ==null){
+            errorMessageTask ="The taskToDelete must have an input.";
             return;
         }
         List<ComplexTask> listOfComplexTasks = this.fillAllComplexTaskFromMapAndUnassigned();
 
-        for(ComplexTask complexTask1 : listOfComplexTasks)
-                if(complexTask1.equals(complexTask))
-                    complexTask1.getTasksOfComplexTask().remove(task);
+        for(ComplexTask complexFromList : listOfComplexTasks)
+                if(complexFromList.equals(complexTask))
+                    complexFromList.deleteTask(taskToDelete);
 
 
-        this.listOfTaskUnssigned.add(task);
+        this.listOfTaskUnssigned.add(taskToDelete);
         this.serializeTaskList();
         this.serializeMap();
     }
@@ -163,15 +178,15 @@ public class TasksManagement {
         List<ComplexTask> complexTasks = new ArrayList<>();
 
         this.deserializeTaskList();
-        for(Task task : this.listOfTaskUnssigned)
-            if (task instanceof ComplexTask)
-                allComplexTasksRecursively((ComplexTask) task,complexTasks);
+        for(Task complexToAdd : this.listOfTaskUnssigned)
+            if (complexToAdd instanceof ComplexTask)
+                allComplexTasksRecursively((ComplexTask) complexToAdd,complexTasks);
 
         this.deserializeMap();
         for (Map.Entry<Employee, List<Task>> entry : this.mapOfTasks.entrySet())
-            for (Task task : entry.getValue())
-                if (task instanceof ComplexTask && !complexTasks.contains(task))
-                    allComplexTasksRecursively((ComplexTask) task,complexTasks);
+            for (Task complexToAdd : entry.getValue())
+                if (complexToAdd instanceof ComplexTask && !complexTasks.contains(complexToAdd))
+                    allComplexTasksRecursively((ComplexTask) complexToAdd,complexTasks);
 
         return complexTasks;
     }
@@ -186,4 +201,7 @@ public class TasksManagement {
 
     }
 
+    public static Integer getIdAutoIncrement() {
+        return idAutoIncrement;
+    }
 }
